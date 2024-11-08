@@ -12,7 +12,7 @@ var unsafeRequire = function(m, stub){
 			module = stub;
 		}
 	}
-	
+
 	return module;
 }
 
@@ -24,24 +24,24 @@ var stub = {
 
 var engine = unsafeRequire("../engine", stub);
 var command = unsafeRequire("../command", stub);
-var radio = unsafeRequire("./radio", stub);
+var radio = unsafeRequire("../radio", stub);
 var satellite1 = unsafeRequire("./satellite1", stub);
 var satellite2 = unsafeRequire("./satellite2", stub);
 
 
 
 var rocket = {
-	engine: engine, 
-	command: command, 
-	radio: radio, 
+	engine: engine,
+	command: command,
+	radio: radio,
 	satellite1: satellite1,
 	satellite2: satellite2
 };
 
 var checklist = {
-	engine: 0, 
-	command: 0, 
-	radio: 0, 
+	engine: 0,
+	command: 0,
+	radio: 0,
 	satellite1: 0,
 	satellite2: 0
 };
@@ -51,7 +51,7 @@ var takeOff = function(){
 	for(var part in rocket){
 		console.log(counter + "..");
 		checklist[part] = rocket[part].check();
-		
+
 		// S'il manque le moteur ou les commandes Crash
 		if(!checklist[part] && (part === "engine" || part === "command")){
 			var crashMsg = "Crash ! "+part+" is missing !!";
@@ -64,7 +64,7 @@ var takeOff = function(){
 		}
 		counter--;
 	}
-	
+
 	// Décollage
 	if(counter === 0){
 		console.log("0.. Fire \nTaaaaakkke Oooooofffff".green);
