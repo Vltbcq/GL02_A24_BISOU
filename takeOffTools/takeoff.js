@@ -22,8 +22,8 @@ var stub = {
 	}
 };
 
-var engine = unsafeRequire("./engine", stub);
-var command = unsafeRequire("./command", stub);
+var engine = unsafeRequire("../engine", stub);
+var command = unsafeRequire("../command", stub);
 var radio = unsafeRequire("./radio", stub);
 var satellite1 = unsafeRequire("./satellite1", stub);
 var satellite2 = unsafeRequire("./satellite2", stub);
