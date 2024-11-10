@@ -1,0 +1,27 @@
+name: unit-test.yaml
+
+on:
+  pull_request:
+    branches:
+      - dev
+      - main
+  push:
+    branches:
+      - dev
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install
+      - name: Run unit tests
+        run: npm test
+      - name: Report test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: test-results.json
