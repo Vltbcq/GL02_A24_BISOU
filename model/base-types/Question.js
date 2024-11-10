@@ -3,11 +3,24 @@
  * Cette classe doit être considérée comme abstraite, et donc jamais instanciée en tant que telle
  */
 class Question {
+    constructor(question) {
+        this._question = question;
+    }
+
     /**
      * Indique le type de question
-     * @returns {string} Nom indiquant le type de question de l'instance
+     * @returns {string} - Nom indiquant le type de question de l'instance
      */
-    getQuestionType() {
+    get questionType() {
         throw new Error("Question type not implemented.");
     }
+
+    /**
+     * @returns {string} - Question posée
+     */
+    get question() {
+        return this._question;
+    }
 }
+
+module.exports = Question;
