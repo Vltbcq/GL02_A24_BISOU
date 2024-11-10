@@ -1,0 +1,11 @@
+{
+  "typeAcquisition": {
+    "include": ["jest"]
+  },
+  "compilerOptions": {
+    "types": ["jest"],
+    "target": "es6",
+    "module": "commonjs"
+  },
+  "exclude": ["node_modules"]
+}
