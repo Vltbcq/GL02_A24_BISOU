@@ -19,7 +19,7 @@ class MultipleChoiceQuestion extends Question {
      * @inheritDoc
      */
     get questionType() {
-        return "Question à choix multiples";
+        return "Choix Multiples";
     }
 
     /**
