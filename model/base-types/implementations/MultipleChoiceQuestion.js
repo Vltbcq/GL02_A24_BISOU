@@ -30,7 +30,7 @@ class MultipleChoiceQuestion extends Question {
     }
 
     /**
-     * @returns {string[]}
+     * @returns {string[]} - Calcule les réponses valides
      */
     get correctAnswers() {
         let ret = [];
