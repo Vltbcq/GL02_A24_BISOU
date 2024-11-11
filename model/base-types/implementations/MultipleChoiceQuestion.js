@@ -11,7 +11,7 @@ class MultipleChoiceQuestion extends Question {
      */
     constructor(question, answerSet, correctAnswers) {
         super(question);
-        this._questionsSet = answerSet;
+        this._answerSet = answerSet;
         this._correctAnswers = correctAnswers;
     }
 
@@ -26,7 +26,18 @@ class MultipleChoiceQuestion extends Question {
      * @returns {string[]} - L'ensemble des réponses proposées à la question
      */
     get answerSet() {
-        return this._questionsSet;
+        return this._answerSet;
+    }
+
+    /**
+     * @returns {string[]}
+     */
+    get correctAnswers() {
+        let ret = [];
+        for (const correctAnswer in this._correctAnswers) {
+            ret.push(this.answerSet[correctAnswer]);
+        }
+        return ret;
     }
 }
 
