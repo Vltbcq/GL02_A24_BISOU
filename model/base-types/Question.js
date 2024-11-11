@@ -3,6 +3,10 @@
  * Cette classe doit être considérée comme abstraite, et donc jamais instanciée en tant que telle
  */
 class Question {
+    /**
+     * Instancie une question (à n'utiliser que dans des cas d'héritages)
+     * @param question - Enoncé de la question posée
+     */
     constructor(question) {
         this._question = question;
     }

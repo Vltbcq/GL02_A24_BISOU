@@ -15,12 +15,18 @@ class TrueFalseQuestion extends Question {
         this._question = question;
     }
 
+    /**
+     * @inheritDoc
+     */
     get questionType() {
         return 'Vrai/Faux';
     }
 
-    get question() {
-        return this._question;
+    /**
+     * @returns {boolean} - Réponse attendue à la question
+     */
+    get answer() {
+        return this._answer;
     }
 }
 
