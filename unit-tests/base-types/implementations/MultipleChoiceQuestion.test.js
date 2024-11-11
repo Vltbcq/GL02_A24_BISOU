@@ -1,7 +1,7 @@
 const MultipleChoiceQuestion = require("../../../model/base-types/implementations/MultipleChoiceQuestion");
 
 test('Type de question à choix multiples', () => {
-    expect(new MultipleChoiceQuestion("question", null, null).questionType).toBe('Question Multiples');
+    expect(new MultipleChoiceQuestion("question", null, null).questionType).toBe('Choix Multiples');
 })
 
 test('Egalité entre deux questions à choix multiples', () => {
