@@ -5,9 +5,13 @@ test('Type de question mot manquant', () => {
 });
 
 test('Egalité question mot manquant', () => {
-    expect(new BlankWordQuestion('début', 'fin', 'mot manquant')).toEqual(new BlankWordQuestion('début', 'fin', 'mot manquant'));
+    expect(new BlankWordQuestion('début', 'fin', 'mot manquant')).toStrictEqual(new BlankWordQuestion('début', 'fin', 'mot manquant'));
 });
 
 test('Inégalité question mot manquant', () => {
-    expect(new BlankWordQuestion('début', ' ..... fin', 'mot manquant')).not.toEqual(new BlankWordQuestion('début ..... ', 'fin', 'mot manquant'));
+    expect(new BlankWordQuestion('début', ' ..... fin', 'mot manquant')).not.toStrictEqual(new BlankWordQuestion('début ..... ', 'fin', 'mot manquant'));
+})
+
+test('Lecture du mot manquant dans une question à mot manquant', () => {
+    expect(new BlankWordQuestion('début', 'fin', 'mot manquant').blankWord).toBe('mot manquant');
 })

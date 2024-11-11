@@ -5,5 +5,5 @@ test('Type de question numérique', () => {
 })
 
 test('Egalité des questions numériques', () => {
-    expect(new NumericQuestion('question', 4)).toEqual(new NumericQuestion('question', 4));
+    expect(new NumericQuestion('question', 4)).toStrictEqual(new NumericQuestion('question', 4));
 })
