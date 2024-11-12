@@ -19,7 +19,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Run unit tests
-        run: npm test:model
+        run: npm run test:model
       - name: Report test results
         uses: actions/upload-artifact@v3
         with:
