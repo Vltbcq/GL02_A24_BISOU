@@ -1,4 +1,4 @@
-const TrueFalseQuestion = require('../../../model/base-types/implementations/TrueFalseQuestion');
+const TrueFalseQuestion = require('../../../../app/model/base-types/implementations/TrueFalseQuestion');
 
 test('Type de question vrai/faux', () => {
     expect(new TrueFalseQuestion("question", true).questionType).toBe('Vrai/Faux');
