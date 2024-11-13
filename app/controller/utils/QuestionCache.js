@@ -1,8 +1,10 @@
 /**
  * Implémente le cache partagé des controllers
  * On applique ici un singleton pour s'assurer que ce cache soit bien commun à tous les controllers
+ *
+ * Pour utiliser le cache, passer par l'attribut statique "instance" puis l'utiliser pour appeler les méthodes & propriétés
  */
-class Cache {
+class QuestionCache {
     static _instance;
 
     /**
@@ -14,12 +16,12 @@ class Cache {
 
     /**
      * Retourne l'instance du cache (l'instancie si nécessaire)
-     * @returns {Cache} - L'instance unique du cache
+     * @returns {QuestionCache} - L'instance unique du cache
      */
     static get instance() {
         // Si l'instance n'existe pas alors on l'initialise
-        if (this._instance() === null) {
-            this._instance = new Cache();
+        if (this._instance == null) {
+            this._instance = new QuestionCache();
         }
         // On retourne l'instance
         return this._instance;
@@ -32,6 +34,14 @@ class Cache {
     get questions() {
         return this._questions
     }
+
+    /**
+     * Ajoute une nouvelle question au cache
+     * @param question {Question} - Question
+     */
+    addQuestion(question) {
+        this._questions.push(question);
+    }
 }
 
-module.exports = Cache;
+module.exports = QuestionCache;
