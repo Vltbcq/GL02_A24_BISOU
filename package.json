@@ -5,6 +5,7 @@
   },
   "scripts": {
     "test:model": "jest --testPathPattern='/test/model'",
-    "test": "jest"
+    "test": "jest",
+    "test:controller": "jest --testPathPattern='/test/controller'"
   }
 }
