@@ -1,4 +1,4 @@
-const ShortAnswerQuestion = require('../../../model/base-types/implementations/ShortAnswerQuestion');
+const ShortAnswerQuestion = require('../../../../app/model/base-types/implementations/ShortAnswerQuestion');
 
 test('Type de question à réponse courte', () => {
     expect(new ShortAnswerQuestion('question', 'réponse').questionType).toBe('Réponse courte');

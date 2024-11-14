@@ -1,4 +1,4 @@
-name: unit-test.yaml
+name: model-unit-test.yaml
 
 on:
   pull_request:
@@ -19,9 +19,9 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Run unit tests
-        run: npm test
+        run: npm run test:model
       - name: Report test results
         uses: actions/upload-artifact@v3
         with:
-          name: test-results
-          path: test-results.json
+          name: model-test-results
+          path: model-test-results.json

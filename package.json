@@ -4,6 +4,7 @@
     "jest": "^29.7.0"
   },
   "scripts": {
+    "test:model": "jest --testPathPattern='/test/model'",
     "test": "jest"
   }
 }

@@ -1,4 +1,4 @@
-const MultipleChoiceQuestion = require("../../../model/base-types/implementations/MultipleChoiceQuestion");
+const MultipleChoiceQuestion = require("../../../../app/model/base-types/implementations/MultipleChoiceQuestion");
 
 test('Type de question à choix multiples', () => {
     expect(new MultipleChoiceQuestion("question", null, null).questionType).toBe('Choix Multiples');
