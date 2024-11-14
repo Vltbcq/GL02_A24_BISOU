@@ -32,3 +32,21 @@ test('Suppression de questions', () => {
     expect(test.questionNumber).toBe(0);
     expect(test.containsQuestion(new NumericQuestion('question', 4))).toBeFalsy()
 })
+
+test("Validité d'un examen", () => {
+    let test = new Test()
+    for (let i = 0; i < 10; i++) {
+        test.addQuestion(new NumericQuestion('question', i));
+    }
+    expect(test.isValid).toBeFalsy()
+    for (let i = 0; i < 5; i++) {
+        test.addQuestion(new NumericQuestion('question', i+10));
+    }
+    expect(test.isValid).toBeTruthy()
+    for (let i = 0; i < 5; i++) {
+        test.addQuestion(new NumericQuestion('question', i+15));
+    }
+    expect(test.isValid).toBeTruthy()
+    test.addQuestion(new NumericQuestion('question', 30))
+    expect(test.isValid).toBeFalsy()
+})

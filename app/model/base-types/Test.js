@@ -29,7 +29,7 @@ class Test {
      * @returns {boolean} - Indique si un examen est valide
      */
     get isValid() {
-        return 20 >= this.questionNumber >= 15
+        return 20 >= this.questionNumber && this.questionNumber >= 15
     }
 
     /**
