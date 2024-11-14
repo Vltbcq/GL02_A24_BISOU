@@ -37,7 +37,7 @@ class Test {
      * @param question {Question} - Question à ajouter
      */
     addQuestion(question) {
-        if (!this.haveQuestion(question)) {
+        if (!this.containsQuestion(question)) {
             this._questions.push(question);
         }
     }
@@ -48,7 +48,7 @@ class Test {
      */
     removeQuestion(question) {
         // On met un filtre qui accepte tous les éléments sauf ceux identiques à celui passé en paramètre
-        this._questions = this._questions.filter(item => item !== question);
+        this._questions = this._questions.filter(item => !item.equal(question));
     }
 
     /**
@@ -56,7 +56,9 @@ class Test {
      * @param question {Question} - Question recherchée
      * @returns {boolean} - Vrai si la question est dans l'examen
      */
-    haveQuestion(question) {
-        return this._questions.includes(question);
+    containsQuestion(question) {
+        return this._questions.some(item => item.equal(question));
     }
 }
+
+module.exports = Test;

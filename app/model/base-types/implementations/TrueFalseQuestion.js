@@ -28,6 +28,15 @@ class TrueFalseQuestion extends Question {
     get answer() {
         return this._answer;
     }
+
+    /**
+     * @inheritDoc
+     */
+    equal(other) {
+        return super.equal(other)
+            && other instanceof TrueFalseQuestion
+            && other.answer === this.answer;
+    }
 }
 
 module.exports = TrueFalseQuestion;
