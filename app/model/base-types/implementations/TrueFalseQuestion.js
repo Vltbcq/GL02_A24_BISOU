@@ -30,6 +30,14 @@ class TrueFalseQuestion extends Question {
     }
 
     /**
+    * Modifie la réponse de la question initialement posée
+    * @param {boolean} editedAnswer
+    */
+    set answer(editedAnswer){
+        this._answer = editedAnswer;
+    }
+
+    /**
      * @inheritDoc
      */
     equal(other) {

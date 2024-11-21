@@ -1,5 +1,7 @@
 const QuestionCache = require('../../../app/controller/utils/QuestionCache');
 const NumericQuestion = require("../../../app/model/base-types/implementations/NumericQuestion");
+const ShortAnswerQuestion = require('../../../app/model/base-types/implementations/ShortAnswerQuestion');
+const Question = require('../../../app/model/base-types/Question');
 
 test('Récupération de l\'instance du cache des questions', () => {
     expect(QuestionCache.instance).not.toBeNull();
@@ -7,8 +9,9 @@ test('Récupération de l\'instance du cache des questions', () => {
 })
 
 test("Ajout d'une question au cache", () => {
-    QuestionCache.instance.addQuestion(new NumericQuestion("question", 2));
-    expect(QuestionCache.instance.questions).toContainEqual(new NumericQuestion("question", 2));
+    let testQuestion = new NumericQuestion("question", 2);
+    QuestionCache.instance.addQuestion(testQuestion);
+    expect(QuestionCache.instance.questions[0].equal(new NumericQuestion("question", 2))).toBeTruthy();
 })
 
 test("Ajout d'un mauvais objet au cache des questions", () => {
@@ -16,4 +19,11 @@ test("Ajout d'un mauvais objet au cache des questions", () => {
         QuestionCache.instance.addQuestion(5);
     }
     expect(t).toThrow();
+})
+
+test("Recherche d'une question dans le cache", () => {
+    let testQuestion = new NumericQuestion("question?", 3);
+    let id_question = testQuestion._id;
+    QuestionCache.instance.addQuestion(testQuestion);
+    expect(QuestionCache.instance.getQuestion(id_question).equal(new NumericQuestion("question?", 3))).toBeTruthy();
 })

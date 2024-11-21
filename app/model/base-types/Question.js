@@ -3,11 +3,15 @@
  * Cette classe doit être considérée comme abstraite, et donc jamais instanciée en tant que telle
  */
 class Question {
+
+    static _staticId = 0;
+
     /**
      * Instancie une question (à n'utiliser que dans des cas d'héritages)
      * @param question - Enoncé de la question posée
      */
     constructor(question) {
+        this._id = Question._staticId++;
         this._question = question;
     }
 
@@ -24,6 +28,21 @@ class Question {
      */
     get question() {
         return this._question;
+    }
+
+    /**
+     * @returns {number} - ID de la question
+     */
+    get id() {
+        return this._id;
+    }
+
+    /**
+     * Modifie la question initialement posée
+     * @param {string} editedQuestion
+     */
+    set question(editedQuestion){
+        this._question = editedQuestion;
     }
 
     /**

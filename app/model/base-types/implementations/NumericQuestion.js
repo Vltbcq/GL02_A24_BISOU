@@ -26,6 +26,14 @@ class NumericQuestion extends Question {
     }
 
     /**
+     * Modifie la réponse de la question initialement posée
+     * @param {number} editedAnswer
+     */
+    set answer(editedAnswer){
+        this._answer = editedAnswer;
+    }
+
+    /**
      * @inheritDoc
      */
     equal(other) {

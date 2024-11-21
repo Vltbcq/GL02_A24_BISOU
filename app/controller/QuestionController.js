@@ -4,6 +4,7 @@ const MultipleChoiceQuestion = require('../model/base-types/implementations/Mult
 const NumericQuestion = require('../model/base-types/implementations/NumericQuestion')
 const ShortAnswerQuestion = require('../model/base-types/implementations/ShortAnswerQuestion')
 const TrueFalseQuestion = require("../model/base-types/implementations/TrueFalseQuestion");
+const Question = require('../model/base-types/Question')
 
 /**
  * Contrôleur des questions, gère les opérations portant sur celle-ci
@@ -69,6 +70,82 @@ class QuestionController {
         let newQuestion = new TrueFalseQuestion(question, answer);
         this.#addToCache(newQuestion);
         return newQuestion;
+    }
+
+    /**
+     * Modifie l'énoncé d'une question
+     * @param {Question} question
+     * @param {string} editedText
+     */
+    editQuestion(questionToEdit, editedText){
+        questionToEdit.question = editedText;
+    }
+
+    /**
+     * Modifie une question à mot manquant
+     * @param {BlankWordQuestion} blankWordQuestion
+     * @param {string} editedText
+     * @param {number} part
+     */
+    editBlankWord(blankWordQuestion, editedText, part){
+        if (part === 1)
+            blankWordQuestion.textPart1 = editedText;
+        else if (part === 2)
+            blankWordQuestion.textPart2 = editedText;
+    }
+
+    /**
+     * Modifie une réponse à une question à mot manquant
+     * @param {BlankWordQuestion} blankWordQuestion
+     * @param {string} editedText
+     */
+    editBlankWordAnswer(blankWordQuestion, editedText){
+        blankWordQuestion.blankWord = editedText;
+    }
+
+    /**
+     * Modifie l'ensemble des réponses d'une question à choix multiples
+     * @param {MultipleChoiceQuestion} multipleChoiceQuestion
+     * @param {string[]} editedArray
+     */
+    editMultipleChoiceAnswerSet(multipleChoiceQuestion, editedArray){
+        multipleChoiceQuestion.answerSet = editedArray;
+    }
+
+    /**
+     * Modifie les réponses correctes des réponses d'une question à choix multiples
+     * @param {MultipleChoiceQuestion} multipleChoiceQuestion
+     * @param {number[]} editedArray
+     */
+    editMultipleChoiceCorrectAnswer(multipleChoiceQuestion, editedArray){
+        multipleChoiceQuestion.correctAnswers = editedArray;
+    }
+
+    /**
+     * Modifie une réponse à une question numérique
+     * @param {NumericQuestion} numericQuestion
+     * @param {number} editedText
+     */
+    editNumericAnswer(numericQuestion, editedText){
+        numericQuestion.answer = editedText;
+    }
+
+    /**
+     * Modifie une réponse à une question à réponse courte
+     * @param {ShortAnswerQuestion} shortAnswerQuestion
+     * @param {string} editedText
+     */
+    editShortAnswerAnswer(shortAnswerQuestion, editedText){
+        shortAnswerQuestion.answer = editedText;
+    }
+
+    /**
+     * Modifie une réponse à une question vrai/faux
+     * @param {TrueFalseQuestion} trueFalseQuestion
+     * @param {boolean} editedText
+     */
+    editTrueFalseAnswer(trueFalseQuestion, editedText){
+        trueFalseQuestion.answer = editedText;
     }
 
     /**
