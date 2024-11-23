@@ -1,0 +1,27 @@
+name: controller-unit-test.yaml
+
+on:
+  pull_request:
+    branches:
+      - dev
+      - main
+  push:
+    branches:
+      - dev
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install
+      - name: Run unit tests
+        run: npm run test:controller
+      - name: Report test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: model-test-results
+          path: model-test-results.json
