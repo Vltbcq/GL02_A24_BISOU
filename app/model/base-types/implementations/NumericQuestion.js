@@ -24,6 +24,15 @@ class NumericQuestion extends Question {
     get questionType() {
         return 'Numérique';
     }
+
+    /**
+     * @inheritDoc
+     */
+    equal(other) {
+        return super.equal(other)
+            && other instanceof NumericQuestion
+            && other.answer === this.answer;
+    }
 }
 
 module.exports = NumericQuestion;

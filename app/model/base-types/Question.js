@@ -25,6 +25,17 @@ class Question {
     get question() {
         return this._question;
     }
+
+    /**
+     * Vérifie l'égalité avec un autre objet
+     * @param other - Autre objet à tester
+     * @returns {boolean} - Vrai si les deux sont égaux
+     */
+    equal(other) {
+        return other instanceof Question
+            && other.questionType === this.questionType
+            && other.question === this.question;
+    }
 }
 
 module.exports = Question;

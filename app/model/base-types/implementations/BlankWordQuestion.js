@@ -45,6 +45,17 @@ class BlankWordQuestion extends Question {
     get textPart2() {
         return this._textPart2;
     }
+
+    /**
+     * @inheritDoc
+     */
+    equal(other) {
+        return super.equal(other)
+            && other instanceof BlankWordQuestion
+            && other.blankWord === this.blankWord
+            && other.textPart1 === this.textPart2
+            && other.textPart2 === this.textPart2;
+    }
 }
 
 module.exports = BlankWordQuestion;
