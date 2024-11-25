@@ -34,11 +34,11 @@ test('Vérification de la présence d\'une question dans un examen', () => {
       const test = new Test();
       const question = new Question();
       controller.addQuestionToTest(test, question);
-      expect(controller.testContainsQuestion(test, question)).toBe(true);
+      expect(controller.testContainsQuestion(test, question)).toBeTruthy();
    });
 test('Suppression d\'un examen', () => {
       const controller = new TestController();
-      const test = new Test();
+      const test = controller.createTest();
       controller.deleteTest(test);
       expect(TestCache.instance.tests).toStrictEqual([]);
    });

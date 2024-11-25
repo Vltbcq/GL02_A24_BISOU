@@ -1,3 +1,4 @@
+const Test = require('../../model/base-types/Test');
 /**
  * Implémente le cache des examens
  *
@@ -38,9 +39,12 @@ class TestCache {
     * Ajout d'un nouveau test au cache
     * @param test {Test} - Test
     */
-   addTest(test) {
-       this._tests.push(test);
-   }
+    addTest(test) {
+        if (!(test instanceof Test)) {
+            throw new Error('Invalid test object');
+        }
+        this._tests.push(test);
+    }
 
    /**
     * Suppression d'un test du cache
