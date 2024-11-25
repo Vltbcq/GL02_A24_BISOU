@@ -1,3 +1,6 @@
+const Question = require("../../model/base-types/Question");
+const cloneArray = require("./ArrayUtils");
+
 /**
  * Implémente le cache partagé des controllers
  * On applique ici un singleton pour s'assurer que ce cache soit bien commun à tous les controllers
@@ -32,7 +35,7 @@ class QuestionCache {
      * @returns {Question[]} - Liste des questions en cache
      */
     get questions() {
-        return this._questions
+        return cloneArray(this._questions);
     }
 
     /**
@@ -40,7 +43,9 @@ class QuestionCache {
      * @param question {Question} - Question
      */
     addQuestion(question) {
-        this._questions.push(question);
+        if (question instanceof Question) {
+            this._questions.push(question);
+        }
     }
 }
 
