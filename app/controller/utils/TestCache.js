@@ -1,4 +1,5 @@
 const Test = require('../../model/base-types/Test');
+const cloneArray = require("./ArrayUtils");
 /**
  * Implémente le cache des examens
  *
@@ -32,7 +33,7 @@ class TestCache {
     * @returns {Test[]} - Liste des examens en cache
     */
    get tests() {
-       return this._tests
+       return cloneArray(this._tests);
    }
 
    /**

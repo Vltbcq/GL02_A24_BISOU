@@ -10,20 +10,20 @@ describe('TestCache', () => {
 });
 
 test("Ajout d'un examen au cache", () => {
-   const test = new Test;
+   const test = new Test();
    TestCache.instance.addTest(test);
-   expect(TestCache.instance.tests).toContain(test);
+   expect(TestCache.instance.tests).toContainEqual(test);
 });
 
 test("Suppression d'un examen du cache", () => {;
-   const test = new Test;
+   const test = new Test();
    TestCache.instance.addTest(test);
    TestCache.instance.removeTest(test);
    expect(TestCache.instance.tests).not.toContain(test);
 });
 
 test("Mise à jour d'un examen dans le cache", () => {
-   const test = new Test;
+   const test = new Test();
    TestCache.instance.addTest(test);
    test.addQuestion('question 1');
    TestCache.instance.updateTest(test);
