@@ -1,4 +1,5 @@
 const Question = require("../Question");
+const arrayEqual = require("../../utils/ArrayComparator");
 /**
  * Définis une question à choix multiples
  */
@@ -38,6 +39,16 @@ class MultipleChoiceQuestion extends Question {
             ret.push(this.answerSet[correctAnswer]);
         }
         return ret;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    equal(other) {
+        return super.equal(other)
+            && other instanceof MultipleChoiceQuestion
+            && arrayEqual(other.correctAnswers, this.correctAnswers)
+            && arrayEqual(other.answerSet, this.answerSet);
     }
 }
 
