@@ -8,6 +8,7 @@ class Test {
      */
     constructor() {
         this._questions = [];
+        this._id = Date.now();
     }
 
     /**
@@ -15,6 +16,12 @@ class Test {
      */
     get questions() {
         return this._questions;
+    }
+    set questions(value) {
+        this._questions = value;
+    }
+    get id() {
+        return this._id;
     }
 
     /**

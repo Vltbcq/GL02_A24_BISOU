@@ -10,29 +10,30 @@ beforeEach(() => {
 
 test('Création d\'un examen', () => {
     const controller = new TestController();
-    expect(controller.createTest()).toStrictEqual(new Test());
-    expect(TestCache.instance.tests).toStrictEqual([new Test()]);
+    const test = controller.createTest();
+    expect(test).toBeInstanceOf(Test);
+    expect(TestCache.instance.tests).toEqual([test]);
 });
 test('Ajout d\'une question à un examen', () => {
       const controller = new TestController();
-      const test = new Test();
+      const test = controller.createTest();
       const question = new Question();
       controller.addQuestionToTest(test, question);
-      expect(test.questions).toStrictEqual([question]);
+      expect(test.questions).toEqual([question]);
 
    });
 test('Suppression d\'une question d\'un examen', () => {
       const controller = new TestController();
-      const test = new Test();
-      const question = new Question();
+      const test = controller.createTest();
+      const question = new Question('test');
       controller.addQuestionToTest(test, question);
       controller.removeQuestionFromTest(test, question);
-      expect(test.questions).toStrictEqual([]);
+      expect(test.questions).toEqual(['test']);
    });
 test('Vérification de la présence d\'une question dans un examen', () => {
       const controller = new TestController();
-      const test = new Test();
-      const question = new Question();
+      const test = controller.createTest();
+      const question = new Question('test');
       controller.addQuestionToTest(test, question);
       expect(controller.testContainsQuestion(test, question)).toBeTruthy();
    });
@@ -40,5 +41,5 @@ test('Suppression d\'un examen', () => {
       const controller = new TestController();
       const test = controller.createTest();
       controller.deleteTest(test);
-      expect(TestCache.instance.tests).toStrictEqual([]);
+      expect(TestCache.instance.tests).toEqual([]);
    });

@@ -37,6 +37,15 @@ class TestCache {
    }
 
    /**
+    * Retourne un test par son identifiant
+    * @param {number} id - L'identifiant du test
+    * @returns {Test} - Le test correspondant à l'identifiant
+    */
+   getTestById(id) {
+    return this._tests.find(t => t.id === id);
+    }
+
+   /**
     * Ajout d'un nouveau test au cache
     * @param test {Test} - Test
     */
@@ -51,19 +60,23 @@ class TestCache {
     * Suppression d'un test du cache
     * @param test {Test} - Test
     */
-   removeTest(test) {
-       this._tests = this._tests.filter(t => t !== test);
-   }
+    removeTest(test) {
+        this._tests = this._tests.filter(t => t.id !== test.id);
+    }
    /**
     * Mise à jour d'un test dans le cache
     * @param test {Test} - Test
     */
    updateTest(test) {
-       const index = this._tests.findIndex(t => t === test);
-       if (index !== -1) {
-           this._tests[index] = test;
+       const existingTest = this.getTestById(test.id);
+       if (existingTest) {
+           existingTest.questions = test.questions;
+       } else {
+           throw new Error('Test not found');
        }
-   }
+    }
+
+
 }
 
 module.exports = TestCache;
