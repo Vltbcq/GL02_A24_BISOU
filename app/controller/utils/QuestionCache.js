@@ -43,9 +43,10 @@ class QuestionCache {
      * @param question {Question} - Question
      */
     addQuestion(question) {
-        if (question instanceof Question) {
-            this._questions.push(question);
+        if (!(question instanceof Question)) {
+            throw new Error("Something that was'nt a question was passed to the question cache");
         }
+        this._questions.push(question);
     }
 }
 
