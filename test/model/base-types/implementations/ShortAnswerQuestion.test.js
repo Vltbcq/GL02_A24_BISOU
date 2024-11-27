@@ -1,7 +1,7 @@
 const ShortAnswerQuestion = require('../../../../app/model/base-types/implementations/ShortAnswerQuestion');
 
 test('Type de question à réponse courte', () => {
-    expect(new ShortAnswerQuestion('question', 'réponse').questionType).toBe('Réponse courte');
+    expect(ShortAnswerQuestion.questionType).toBe('Réponse courte');
 })
 
 test('Egalité questions à réponse courte', () => {

@@ -1,7 +1,7 @@
 const TrueFalseQuestion = require('../../../../app/model/base-types/implementations/TrueFalseQuestion');
 
 test('Type de question vrai/faux', () => {
-    expect(new TrueFalseQuestion("question", true).questionType).toBe('Vrai/Faux');
+    expect(TrueFalseQuestion.questionType).toBe('Vrai/Faux');
 })
 
 test('Egalité questions vrai/faux', () => {
