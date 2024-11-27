@@ -17,7 +17,7 @@ class ShortAnswerQuestion extends Question {
     /**
      * @inheritDoc
      */
-    get questionType() {
+    static get questionType() {
         return 'Réponse courte';
     }
 

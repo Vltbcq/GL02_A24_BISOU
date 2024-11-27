@@ -18,7 +18,7 @@ class TrueFalseQuestion extends Question {
     /**
      * @inheritDoc
      */
-    get questionType() {
+    static get questionType() {
         return 'Vrai/Faux';
     }
 

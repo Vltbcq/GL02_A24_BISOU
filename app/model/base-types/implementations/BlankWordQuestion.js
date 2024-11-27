@@ -28,7 +28,7 @@ class BlankWordQuestion extends Question {
     /**
      * @inheritDoc
      */
-    get questionType() {
+    static get questionType() {
         return 'Mot Manquant';
     }
 
