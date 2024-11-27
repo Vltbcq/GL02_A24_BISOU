@@ -18,6 +18,6 @@ program
             controller.createShortAnswer(question, answer)
         }
         else if (type === TrueFalseQuestion.questionType) {
-            controller.createTrueFalse(question, answer)
+            controller.createTrueFalse(question, answer === 'yes' || answer === 'y')
         }
     })
