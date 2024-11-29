@@ -1,5 +1,5 @@
 const Test = require('../../app/model/base-types/Test');
-const Question = require('../../app/model/base-types/Question');
+const ShortAnswerQuestion = require('../../app/model/base-types/implementations/ShortAnswerQuestion');
 const TestController = require('../../app/controller/TestController');
 const TestCache = require('../../app/controller/utils/TestCache');
 
@@ -17,7 +17,7 @@ test('Création d\'un examen', () => {
 test('Ajout d\'une question à un examen', () => {
       const controller = new TestController();
       const test = controller.createTest();
-      const question = new Question();
+      const question = new ShortAnswerQuestion();
       controller.addQuestionToTest(test, question);
       expect(test.questions).toEqual([question]);
 
@@ -25,15 +25,15 @@ test('Ajout d\'une question à un examen', () => {
 test('Suppression d\'une question d\'un examen', () => {
       const controller = new TestController();
       const test = controller.createTest();
-      const question = new Question('test');
+      const question = new ShortAnswerQuestion('test','test');
       controller.addQuestionToTest(test, question);
       controller.removeQuestionFromTest(test, question);
-      expect(test.questions).toEqual(['test']);
+      expect(test.questions).toEqual([]);
    });
 test('Vérification de la présence d\'une question dans un examen', () => {
       const controller = new TestController();
       const test = controller.createTest();
-      const question = new Question('test');
+      const question = new ShortAnswerQuestion('test','test');
       controller.addQuestionToTest(test, question);
       expect(controller.testContainsQuestion(test, question)).toBeTruthy();
    });

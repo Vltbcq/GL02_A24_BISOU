@@ -1,7 +1,7 @@
 const TestCache = require('../../../app/controller/utils/TestCache');
 const TestController = require('../../../app/controller/TestController');
 const Test = require('../../../app/model/base-types/Test');
-const Question = require('../../../app/model/base-types/Question');
+const ShortAnswerQuestion = require('../../../app/model/base-types/implementations/ShortAnswerQuestion');
 
 describe('TestCache', () => {
    test('Récupération de l\'instance du cache des tests', () => {
@@ -24,11 +24,15 @@ test("Suppression d'un examen du cache", () => {;
 });
 
 test("Mise à jour d'un examen dans le cache", () => {
-   const test = new Test();
-   const question = new Question('question 1');
+   let test = new Test();
+   let question = new ShortAnswerQuestion('question 1','reponse 1');
    TestCache.instance.addTest(test);
-   test.addQuestion(question);
-   TestCache.instance.updateTest(test);
-   expect(TestCache.instance.tests).toContainEqual(test);
-   expect(TestCache.instance.getTestById(test.id).questions).toEqual([question]);
+
+   // on cré une copie avec le même id pour simuler une modification
+   let updatedTest = new Test();
+   updatedTest.id = test.id;
+   updatedTest.addQuestion(question);
+   TestCache.instance.updateTest(updatedTest);
+   expect(TestCache.instance.tests).toContainEqual(updatedTest);
+   expect(TestCache.instance.getTestById(updatedTest.id).questions).toEqual([question]);
 });

@@ -15,13 +15,28 @@ class Test {
      * @returns {Question[]} - Questions présentes dans l'examen
      */
     get questions() {
-        return this._questions;
+        //syntaxe spread operator pour retourner une copie de l'array
+        return [...this._questions];
     }
+
+    /**
+     * @param value {Question[]} - Questions à ajouter à l'examen
+     */
     set questions(value) {
         this._questions = value;
     }
+
+    /**
+     * @returns {number} - Identifiant de l'examen
+     */
     get id() {
         return this._id;
+    }
+    /**
+     * @param value {number} - nouvel Identifiant de l'examen
+     */
+    set id(value) {
+        this._id = value;
     }
 
     /**
