@@ -1,3 +1,4 @@
+
 /**
  * Représentation logique d'un examen
  * Définis page 25 du cahier des charges
@@ -15,12 +16,12 @@ class Test {
      * @returns {Question[]} - Questions présentes dans l'examen
      */
     get questions() {
-        //syntaxe spread operator pour retourner une copie de l'array
-        return [...this._questions];
+        // Retourne une copie profonde de l'array tout en préservant les objets Question
+        return this._questions.map(question => Object.assign(Object.create(Object.getPrototypeOf(question)), question));
     }
 
     /**
-     * @param value {Question[]} - Questions à ajouter à l'examen
+     * @param value {Question[]} - On écrase les données avec les nouvelles questions
      */
     set questions(value) {
         this._questions = value;
@@ -31,12 +32,6 @@ class Test {
      */
     get id() {
         return this._id;
-    }
-    /**
-     * @param value {number} - nouvel Identifiant de l'examen
-     */
-    set id(value) {
-        this._id = value;
     }
 
     /**
