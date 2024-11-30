@@ -1,7 +1,7 @@
 const BlankWordQuestion = require('../../../../app/model/base-types/implementations/BlankWordQuestion');
 
 test('Type de question mot manquant', () => {
-    expect(new BlankWordQuestion('début', 'fin', 'mot manquant').questionType).toBe('Mot Manquant');
+    expect(BlankWordQuestion.questionType).toBe('Mot Manquant');
 });
 
 test('Egalité question mot manquant', () => {

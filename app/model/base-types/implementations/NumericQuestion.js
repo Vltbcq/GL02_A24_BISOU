@@ -21,7 +21,7 @@ class NumericQuestion extends Question {
         return this._answer;
     }
 
-    get questionType() {
+    static get questionType() {
         return 'Numérique';
     }
 

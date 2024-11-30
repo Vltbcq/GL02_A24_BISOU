@@ -4,7 +4,7 @@
  * @returns {[]} - Clone du tableau
  */
 function cloneArray(arr) {
-   return JSON.parse(JSON.stringify(arr));
+    return JSON.parse(JSON.stringify(arr));
 }
 
 module.exports = cloneArray;
