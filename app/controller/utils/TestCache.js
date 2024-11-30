@@ -1,5 +1,5 @@
 const Test = require("../../model/base-types/Test");
-const cloneArray = require("../../model/utils/ArrayUtils");
+const deepCloneArray = require("../../model/utils/ArrayUtils");
 /**
  * Implémente le cache des examens
  *
@@ -33,7 +33,7 @@ class TestCache {
    * @returns {Test[]} - Liste des examens en cache
    */
   get tests() {
-    return cloneArray(this._tests);
+    return deepCloneArray(this._tests);
   }
 
   /**

@@ -1,5 +1,5 @@
 const Question = require("../../model/base-types/Question");
-const cloneArray = require("../../model/utils/ArrayUtils");
+const deepCloneArray = require("../../model/utils/ArrayUtils");
 
 /**
  * Implémente le cache partagé des controllers
@@ -35,7 +35,7 @@ class QuestionCache {
      * @returns {Question[]} - Liste des questions en cache
      */
     get questions() {
-        return cloneArray(this._questions);
+        return deepCloneArray(this._questions);
     }
 
     /**

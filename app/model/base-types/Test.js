@@ -1,4 +1,4 @@
-
+const deepCloneArray = require('../utils/ArrayUtils');
 /**
  * Représentation logique d'un examen
  * Définis page 25 du cahier des charges
@@ -17,7 +17,7 @@ class Test {
      */
     get questions() {
         // Retourne une copie profonde de l'array tout en préservant les objets Question
-        return this._questions.map(question => Object.assign(Object.create(Object.getPrototypeOf(question)), question));
+        return deepCloneArray(this._questions);
     }
 
     /**
