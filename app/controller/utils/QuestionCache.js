@@ -1,5 +1,5 @@
 const Question = require("../../model/base-types/Question");
-const cloneArray = require("./ArrayUtils");
+const cloneArray = require("../../model/utils/ArrayUtils");
 
 /**
  * Implémente le cache partagé des controllers

@@ -1,5 +1,5 @@
 const Test = require("../../model/base-types/Test");
-const cloneArray = require("./ArrayUtils");
+const cloneArray = require("../../model/utils/ArrayUtils");
 /**
  * Implémente le cache des examens
  *
