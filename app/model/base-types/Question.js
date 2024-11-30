@@ -15,7 +15,7 @@ class Question {
      * Indique le type de question
      * @returns {string} - Nom indiquant le type de question de l'instance
      */
-    get questionType() {
+    static get questionType() {
         throw new Error("Question type not implemented.");
     }
 

@@ -1,7 +1,7 @@
 const NumericQuestion = require('../../../../app/model/base-types/implementations/NumericQuestion');
 
 test('Type de question numérique', () => {
-    expect(new NumericQuestion('question', 3).questionType).toBe('Numérique');
+    expect(NumericQuestion.questionType).toBe('Numérique');
 })
 
 test('Egalité des questions numériques', () => {
