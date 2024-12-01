@@ -6,26 +6,40 @@ const BlankWordQuestion = require("../../model/base-types/implementations/BlankW
 const MultipleChoiceQuestion = require("../../model/base-types/implementations/MultipleChoiceQuestion");
 
 /**
- * Affiche dans le terminal les informations concernant une question
+ * Retourne sous forme de string les informations concernant une question
  * @param question {Question} - Question à afficher
+ * @return {string} - Chaîne de caractères "human-readable"
  */
-function printQuestion(question) {
+function prettyQuestion(question) {
     const questionString = `Question : ${question.question}`;
     let answerString = "Correct answer : ";
-    if (question instanceof NumericQuestion
-        || question instanceof ShortAnswerQuestion
-        || question instanceof TrueFalseQuestion) {
+    if (question instanceof NumericQuestion || question instanceof ShortAnswerQuestion || question instanceof TrueFalseQuestion) {
         answerString += `\n${question.answer}`;
-    }
-    else if (question instanceof BlankWordQuestion) {
+    } else if (question instanceof BlankWordQuestion) {
         answerString += `\n${question.blankWord}`;
-    }
-    else if (question instanceof MultipleChoiceQuestion) {
+    } else if (question instanceof MultipleChoiceQuestion) {
         for (const answer of question.correctAnswers) {
             answerString += `\n- ${answerString}`;
         }
     }
-    console.log(`${questionString}\n${answerString}`);
+    return `${questionString}\n${answerString}`;
 }
 
-module.exports = printQuestion;
+/**
+ * Retourne sous forme de string les informations concernant une série de questions
+ * @param questions {Question[]} - Les questions à afficher
+ * @return {string} - Chaîne de caractères "human-readable"
+ */
+function prettyQuestionList(questions) {
+    const separator = "\n--------------------------------------------------";
+    let message = "Questions in memory :";
+    for (const question of questions) {
+        message += `${separator}\n${prettyQuestion(question)}`;
+    }
+    return message;
+}
+
+module.exports = {
+    prettyQuestion : prettyQuestion,
+    prettyQuestionList : prettyQuestionList
+}
