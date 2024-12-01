@@ -1,3 +1,4 @@
+const deepCloneArray = require('../utils/ArrayUtils');
 /**
  * Représentation logique d'un examen
  * Définis page 25 du cahier des charges
@@ -8,13 +9,29 @@ class Test {
      */
     constructor() {
         this._questions = [];
+        this._id = Date.now();
     }
 
     /**
      * @returns {Question[]} - Questions présentes dans l'examen
      */
     get questions() {
-        return this._questions;
+        // Retourne une copie profonde de l'array tout en préservant les objets Question
+        return deepCloneArray(this._questions);
+    }
+
+    /**
+     * @param value {Question[]} - On écrase les données avec les nouvelles questions
+     */
+    set questions(value) {
+        this._questions = value;
+    }
+
+    /**
+     * @returns {number} - Identifiant de l'examen
+     */
+    get id() {
+        return this._id;
     }
 
     /**
