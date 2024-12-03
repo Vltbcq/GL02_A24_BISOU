@@ -3,7 +3,7 @@ const deepCloneArray = require("../../model/utils/ArrayUtils");
 const ESSerializer = require("esserializer");
 const fs = require("fs");
 const path = require("path");
-const Question = require("../../model/base-types/Question");
+const registerAllClasses = require("./ESSerializerInitializer");
 /**
  * Implémente le cache des examens
  *
@@ -16,8 +16,7 @@ class TestCache {
    * Constructeur de la classe NE PAS L'UTILISER DE L'EXTERIEUR, PASSER PAR L'INSTANCE
    */
   constructor() {
-    ESSerializer.registerClass(Question)
-    ESSerializer.registerClass(Test);
+    registerAllClasses();
     this._tests = [];
     this.#loadState();
   }

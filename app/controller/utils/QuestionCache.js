@@ -3,6 +3,7 @@ const deepCloneArray = require("../../model/utils/ArrayUtils");
 const fs = require("fs");
 const path = require("path");
 const ESSerializer = require('esserializer');
+const registerAllClasses = require("./ESSerializerInitializer");
 
 
 /**
@@ -18,7 +19,7 @@ class QuestionCache {
      * Constructeur de la classe NE PAS L'UTILISER DE L'EXTERIEUR, PASSER PAR L'INSTANCE
      */
     constructor() {
-        ESSerializer.registerClass(Question);
+        registerAllClasses();
         this._questions = [];
         this.#loadState()
     }
