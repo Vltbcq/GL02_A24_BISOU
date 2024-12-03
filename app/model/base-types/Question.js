@@ -13,7 +13,7 @@ class Question {
 
     /**
      * Indique le type de question
-     * @returns {string} - Nom indiquant le type de question de l'instance
+     * @returns {string} - Nom indiquant le type de question
      */
     static get questionType() {
         throw new Error("Question type not implemented.");
@@ -33,7 +33,7 @@ class Question {
      */
     equal(other) {
         return other instanceof Question
-            && other.questionType === this.questionType
+            && typeof other === typeof this
             && other.question === this.question;
     }
 }

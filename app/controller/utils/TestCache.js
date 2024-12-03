@@ -1,5 +1,9 @@
 const Test = require("../../model/base-types/Test");
 const deepCloneArray = require("../../model/utils/ArrayUtils");
+const ESSerializer = require("esserializer");
+const fs = require("fs");
+const path = require("path");
+const Question = require("../../model/base-types/Question");
 /**
  * Implémente le cache des examens
  *
@@ -12,7 +16,10 @@ class TestCache {
    * Constructeur de la classe NE PAS L'UTILISER DE L'EXTERIEUR, PASSER PAR L'INSTANCE
    */
   constructor() {
+    ESSerializer.registerClass(Question)
+    ESSerializer.registerClass(Test);
     this._tests = [];
+    this.#loadState();
   }
 
   /**
@@ -54,6 +61,7 @@ class TestCache {
       throw new Error("Invalid test object");
     }
     this._tests.push(test);
+    this.#saveState();
   }
 
   /**
@@ -65,6 +73,7 @@ class TestCache {
       throw new Error("Invalid test object");
     }
     this._tests = this._tests.filter((t) => t.id !== test.id);
+    this.#saveState();
   }
   /**
    * Mise à jour d'un test dans le cache
@@ -77,9 +86,20 @@ class TestCache {
     const existingTest = this.getTestById(test.id);
     if (existingTest) {
       existingTest.questions = test.questions;
+      this.#saveState();
     } else {
       throw new Error("Test not found");
     }
+  }
+
+  #saveState() {
+    const json = ESSerializer.serialize(this._tests);
+    fs.writeFileSync(path.resolve('./data/tests.json'), json, "utf8");
+  }
+
+  #loadState() {
+    const jsonData = fs.readFileSync(path.resolve('./data/tests.json'), 'utf8');
+    this._questions = ESSerializer.deserialize(jsonData);
   }
 }
 

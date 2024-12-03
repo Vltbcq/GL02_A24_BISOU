@@ -1,5 +1,9 @@
 const Question = require("../../model/base-types/Question");
 const deepCloneArray = require("../../model/utils/ArrayUtils");
+const fs = require("fs");
+const path = require("path");
+const ESSerializer = require('esserializer');
+
 
 /**
  * Implémente le cache partagé des controllers
@@ -14,7 +18,9 @@ class QuestionCache {
      * Constructeur de la classe NE PAS L'UTILISER DE L'EXTERIEUR, PASSER PAR L'INSTANCE
      */
     constructor() {
+        ESSerializer.registerClass(Question);
         this._questions = [];
+        this.#loadState()
     }
 
     /**
@@ -47,6 +53,18 @@ class QuestionCache {
             throw new Error("Something that was'nt a question was passed to the question cache");
         }
         this._questions.push(question);
+        this.#saveState()
+    }
+
+    // à appeler chaque fois qu'une modification est faite dans le cache
+    #saveState() {
+        const json = ESSerializer.serialize(this._questions);
+        fs.writeFileSync(path.resolve('./data/questions.json'), json, "utf8");
+    }
+
+    #loadState() {
+        const jsonData = fs.readFileSync(path.resolve('./data/questions.json'), 'utf8');
+        this._questions = ESSerializer.deserialize(jsonData);
     }
 }
 
