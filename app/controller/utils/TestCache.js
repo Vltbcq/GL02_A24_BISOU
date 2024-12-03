@@ -99,7 +99,9 @@ class TestCache {
 
   #loadState() {
     const jsonData = fs.readFileSync(path.resolve('./data/tests.json'), 'utf8');
-    this._questions = ESSerializer.deserialize(jsonData);
+    if (jsonData) {
+      this._tests = ESSerializer.deserialize(jsonData);
+    }
   }
 }
 

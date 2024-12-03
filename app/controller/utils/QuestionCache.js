@@ -64,7 +64,9 @@ class QuestionCache {
 
     #loadState() {
         const jsonData = fs.readFileSync(path.resolve('./data/questions.json'), 'utf8');
-        this._questions = ESSerializer.deserialize(jsonData);
+        if (jsonData) {
+            this._questions = ESSerializer.deserialize(jsonData);
+        }
     }
 }
 
