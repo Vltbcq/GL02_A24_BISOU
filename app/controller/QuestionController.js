@@ -71,6 +71,13 @@ class QuestionController {
         return newQuestion;
     }
 
+    /**
+     * @returns {Question[]} - Toutes les questions en cache
+     */
+    readAll() {
+        return QuestionCache.instance.questions;
+    }
+
     // Ajoute une question au cache
     #addToCache(newQuestion) {
         QuestionCache.instance.addQuestion(newQuestion);

@@ -8,4 +8,6 @@ program
 
 addQuestionCommands(program);
 
+program.parse();
+
 module.exports = program;
