@@ -6,7 +6,8 @@
   "scripts": {
     "test:model": "jest --testPathPattern='/test/model'",
     "test": "jest",
-    "test:controller": "jest --testPathPattern='/test/controller'"
+    "test:controller": "jest --testPathPattern='/test/controller'",
+    "launch": "node ./app/view/Main.js"
   },
   "dependencies": {
     "commander": "^12.1.0",
