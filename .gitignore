@@ -130,3 +130,6 @@ dist
 .pnp.*
 package-lock.json
 package.json
+
+# Datas used by the program
+/data/
