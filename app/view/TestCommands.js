@@ -21,3 +21,4 @@ function addTestCommands(program) {
         })
 
 }
+module.exports = addTestCommands;

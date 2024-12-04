@@ -1,4 +1,4 @@
-Test = require('../model/base-types/Test');
+
 
 /**
  * Retourne sous forme de string les informations concernant un examen
