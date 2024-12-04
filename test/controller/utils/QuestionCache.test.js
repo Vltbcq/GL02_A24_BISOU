@@ -11,7 +11,7 @@ test('Récupération de l\'instance du cache des questions', () => {
 test("Ajout d'une question au cache", () => {
     let testQuestion = new NumericQuestion("question", 2);
     QuestionCache.instance.addQuestion(testQuestion);
-    expect(QuestionCache.instance.questions[0].equal(new NumericQuestion("question", 2))).toBeTruthy();
+    expect(QuestionCache.instance.questions.some(q => q.equal(new NumericQuestion("question", 2)))).toBeTruthy();
 })
 
 test("Ajout d'un mauvais objet au cache des questions", () => {

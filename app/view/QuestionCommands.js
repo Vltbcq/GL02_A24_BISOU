@@ -54,6 +54,8 @@ function addQuestionCommands(program) {
                 } else{
                     console.log("Unrecognized question type.");
                 }
+
+                QuestionCache.instance.saveState();
             } catch(error){
                 console.error(error.message);
             }
@@ -105,6 +107,9 @@ function addQuestionCommands(program) {
                             console.log("No option has been selected. Please select an option (answerset or correctanswer) for multiple choice questions.")
                     }
                 }
+
+                QuestionCache.instance.saveState();
+
             } catch(error){
                 console.error(error.message);
             }

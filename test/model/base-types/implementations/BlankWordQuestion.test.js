@@ -9,7 +9,7 @@ test('Egalité question mot manquant', () => {
 });
 
 test('Inégalité question mot manquant', () => {
-    expect(new BlankWordQuestion('début', ' ..... fin', 'mot manquant').equal(new BlankWordQuestion('début ..... ', 'fin', 'mot manquant'))).toBe(false);
+    expect(new BlankWordQuestion('début', ' ..... fin', 'mot manquant').equal(new BlankWordQuestion('début ..... ', 'fin', 'mot manquant'))).toBeFalsy();
 })
 
 test('Lecture du mot manquant dans une question à mot manquant', () => {

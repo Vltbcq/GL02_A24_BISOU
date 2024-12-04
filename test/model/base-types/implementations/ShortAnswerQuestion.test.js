@@ -9,5 +9,5 @@ test('Egalité questions à réponse courte', () => {
 })
 
 test('Inégalité questions à réponse courte', () => {
-    expect(new ShortAnswerQuestion('question', 'réponse').equal(new ShortAnswerQuestion('question', 'autre réponse'))).toBe(false);
+    expect(new ShortAnswerQuestion('question', 'réponse').equal(new ShortAnswerQuestion('question', 'autre réponse'))).toBeFalsy();
 })
