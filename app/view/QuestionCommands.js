@@ -35,7 +35,7 @@ function addQuestionCommands(program) {
         .option('-q, --question <question>', 'Defines a substring we are looking for in the wording of the question')
         .option('-t, --type <type>', 'The type of the question')
         .action((options) => {
-            logger.info("Execution of showquestion command");
+            logger.info(`Execution of showquestion command, filtered with question as ${options.question} and type as ${options.type}`);
             let questions = controller.search(options.question, options.type);
             console.log(prettyQuestionList(questions));
         })
