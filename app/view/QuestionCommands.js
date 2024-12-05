@@ -94,15 +94,9 @@ function addQuestionCommands(program) {
                     }
                 } else if (question instanceof MultipleChoiceQuestion) {
                     if (option.answerset) {
-                        const answersetList = editedText.split(',').map(item => item.trim());
-                        controller.editMultipleChoiceAnswerSet(question, answersetList);
+                        controller.editMultipleChoiceAnswerSet(question, editedText);
                     } else if (option.correctanswer) {
-                        const correctAnswers = editedText.split(',').map(item => item.trim());
-                        const indexes = correctAnswers.map(answer => answers.indexOf(answer));
-                        if (indexes.includes(-1)) {
-                            console.warn("Be careful. Some of the answers you gave might not be in the answet set.")
-                        }
-                        controller.editMultipleChoiceCorrectAnswer(question, indexes);
+                        controller.editMultipleChoiceCorrectAnswer(question, editedText);
                     } else {
                             console.log("No option has been selected. Please select an option (answerset or correctanswer) for multiple choice questions.")
                     }

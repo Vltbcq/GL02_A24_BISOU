@@ -109,20 +109,26 @@ class QuestionController {
     /**
      * Modifie l'ensemble des réponses d'une question à choix multiples
      * @param {MultipleChoiceQuestion} multipleChoiceQuestion
-     * @param {string[]} editedArray
+     * @param {string} editedText
      */
-    editMultipleChoiceAnswerSet(multipleChoiceQuestion, editedArray){
-        multipleChoiceQuestion.answerSet = editedArray;
+    editMultipleChoiceAnswerSet(multipleChoiceQuestion, editedText){
+        const answersetList = editedText.split(',').map(item => item.trim());
+        multipleChoiceQuestion.answerSet = answersetList;
         QuestionCache.instance.saveState();
     }
 
     /**
      * Modifie les réponses correctes des réponses d'une question à choix multiples
      * @param {MultipleChoiceQuestion} multipleChoiceQuestion
-     * @param {number[]} editedArray
+     * @param {string} editedText
      */
-    editMultipleChoiceCorrectAnswer(multipleChoiceQuestion, editedArray){
-        multipleChoiceQuestion.correctAnswers = editedArray;
+    editMultipleChoiceCorrectAnswer(multipleChoiceQuestion, editedText){
+        const correctAnswers = editedText.split(',').map(item => item.trim());
+        const indexes = correctAnswers.map(answer => multipleChoiceQuestion._answerSet.indexOf(answer));
+        if (indexes.includes(-1)) {
+            throw new Error("Be careful. Some of the answers you gave might not be in the answet set.");
+        }
+        multipleChoiceQuestion.correctAnswers = indexes;
         QuestionCache.instance.saveState();
     }
 
