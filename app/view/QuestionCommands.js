@@ -5,6 +5,10 @@ const TrueFalseQuestion = require("../model/base-types/implementations/TrueFalse
 const {prettyQuestionList} = require("./pretty-printing-tools/QuestionPrinter");
 const logger = require("../security/Logger");
 
+/**
+ * Ajoute les commandes liées aux questions à un programme
+ * @param program - Programme commander auquel les commandes seront ajoutées
+ */
 function addQuestionCommands(program) {
 
     const controller = new QuestionController();
@@ -28,9 +32,11 @@ function addQuestionCommands(program) {
     program
         .command('showquestions')
         .description("Show the questions available")
-        .action(() => {
+        .option('-q, --question <question>', 'Defines a substring we are looking for in the wording of the question')
+        .option('-t, --type <type>', 'The type of the question')
+        .action((options) => {
             logger.info("Execution of showquestion command");
-            let questions = controller.readAll();
+            let questions = controller.search(options.question, options.type);
             console.log(prettyQuestionList(questions));
         })
 }
