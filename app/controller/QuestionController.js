@@ -79,6 +79,7 @@ class QuestionController {
      */
     editQuestion(questionToEdit, editedText){
         questionToEdit.question = editedText;
+        QuestionCache.instance.saveState();
     }
 
     /**
@@ -92,6 +93,7 @@ class QuestionController {
             blankWordQuestion.textPart1 = editedText;
         else if (part === 2)
             blankWordQuestion.textPart2 = editedText;
+        QuestionCache.instance.saveState();
     }
 
     /**
@@ -101,6 +103,7 @@ class QuestionController {
      */
     editBlankWordAnswer(blankWordQuestion, editedText){
         blankWordQuestion.blankWord = editedText;
+        QuestionCache.instance.saveState();
     }
 
     /**
@@ -110,6 +113,7 @@ class QuestionController {
      */
     editMultipleChoiceAnswerSet(multipleChoiceQuestion, editedArray){
         multipleChoiceQuestion.answerSet = editedArray;
+        QuestionCache.instance.saveState();
     }
 
     /**
@@ -119,6 +123,7 @@ class QuestionController {
      */
     editMultipleChoiceCorrectAnswer(multipleChoiceQuestion, editedArray){
         multipleChoiceQuestion.correctAnswers = editedArray;
+        QuestionCache.instance.saveState();
     }
 
     /**
@@ -128,6 +133,7 @@ class QuestionController {
      */
     editNumericAnswer(numericQuestion, editedText){
         numericQuestion.answer = editedText;
+        QuestionCache.instance.saveState();
     }
 
     /**
@@ -137,6 +143,7 @@ class QuestionController {
      */
     editShortAnswerAnswer(shortAnswerQuestion, editedText){
         shortAnswerQuestion.answer = editedText;
+        QuestionCache.instance.saveState();
     }
 
     /**
@@ -146,6 +153,7 @@ class QuestionController {
      */
     editTrueFalseAnswer(trueFalseQuestion, editedText){
         trueFalseQuestion.answer = editedText;
+        QuestionCache.instance.saveState();
     }
 
     /**
@@ -158,7 +166,7 @@ class QuestionController {
     // Ajoute une question au cache
     #addToCache(newQuestion) {
         QuestionCache.instance.addQuestion(newQuestion);
-    }
+    }    
 }
 
 module.exports = QuestionController;

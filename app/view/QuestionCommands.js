@@ -108,8 +108,6 @@ function addQuestionCommands(program) {
                     }
                 }
 
-                QuestionCache.instance.saveState();
-
             } catch(error){
                 console.error(error.message);
             }
