@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const ESSerializer = require('esserializer');
 const registerAllClasses = require("./ESSerializerInitializer");
+const logger = require("../../security/Logger");
 
 
 /**
@@ -42,6 +43,7 @@ class QuestionCache {
      * @returns {Question[]} - Liste des questions en cache
      */
     get questions() {
+        logger.info("Access made to the question list");
         return deepCloneArray(this._questions);
     }
 
@@ -53,6 +55,7 @@ class QuestionCache {
         if (!(question instanceof Question)) {
             throw new Error("Something that was'nt a question was passed to the question cache");
         }
+        logger.info(`Adding question (${JSON.stringify(question)}) to the question list`);
         this._questions.push(question);
         this.#saveState()
     }

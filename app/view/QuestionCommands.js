@@ -3,6 +3,7 @@ const QuestionController = require("../controller/QuestionController");
 const ShortAnswerQuestion = require("../model/base-types/implementations/ShortAnswerQuestion");
 const TrueFalseQuestion = require("../model/base-types/implementations/TrueFalseQuestion");
 const {prettyQuestionList} = require("./pretty-printing-tools/QuestionPrinter");
+const logger = require("../security/Logger");
 
 /**
  * Ajoute les commandes liées aux questions à un programme
@@ -16,8 +17,9 @@ function addQuestionCommands(program) {
         .description("Create a new question")
         .argument('<type>', 'The type of the question')
         .argument('<question>', 'The wording of the question')
-        .argument('<answer>', 'The correct answer of the question')
+        .argument('<answer>', 'The correct answer of the question (yes/y or no/n)') // c'est un mensonge mais c'est pas grave
         .action((type, question, answer) => {
+            logger.info(`Execution of mkquestion command with the following parameters : [type : ${type}; question : ${question}, answer : ${answer}`);
             if (type === NumericQuestion.questionType) {
                 controller.createNumeric(question, parseInt(answer))
             } else if (type === ShortAnswerQuestion.questionType) {
@@ -33,6 +35,7 @@ function addQuestionCommands(program) {
         .option('-q, --question <question>', 'Defines a substring we are looking for in the wording of the question')
         .option('-t, --type <type>', 'The type of the question')
         .action((options) => {
+            logger.info(`Execution of showquestion command, filtered with question as ${options.question} and type as ${options.type}`);
             let questions = controller.search(options.question, options.type);
             console.log(prettyQuestionList(questions));
         })
