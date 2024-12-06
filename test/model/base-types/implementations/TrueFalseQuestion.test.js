@@ -5,5 +5,5 @@ test('Type de question vrai/faux', () => {
 })
 
 test('Egalité questions vrai/faux', () => {
-    expect(new TrueFalseQuestion("question", true)).toStrictEqual(new TrueFalseQuestion("question", true));
+    expect(new TrueFalseQuestion("question", true).equal(new TrueFalseQuestion("question", true))).toBeTruthy();
 })

@@ -5,9 +5,9 @@ test('Type de question à réponse courte', () => {
 })
 
 test('Egalité questions à réponse courte', () => {
-    expect(new ShortAnswerQuestion('question', 'réponse')).toStrictEqual(new ShortAnswerQuestion('question', 'réponse'));
+    expect(new ShortAnswerQuestion('question', 'réponse').equal(new ShortAnswerQuestion('question', 'réponse'))).toBeTruthy();
 })
 
 test('Inégalité questions à réponse courte', () => {
-    !expect(new ShortAnswerQuestion('question', 'réponse')).not.toStrictEqual(new ShortAnswerQuestion('question', 'autre réponse'));
+    expect(new ShortAnswerQuestion('question', 'réponse').equal(new ShortAnswerQuestion('question', 'autre réponse'))).toBeFalsy();
 })

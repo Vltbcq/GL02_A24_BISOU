@@ -42,6 +42,22 @@ class MultipleChoiceQuestion extends Question {
     }
 
     /**
+     * Modifie l'ensemble des réponses possibles
+     * @param {string[]} answerSet - Ensemble des réponses possibles
+     */
+    set answerSet(editedAnswerSet){
+        this._answerSet = editedAnswerSet;
+    }
+
+    /**
+     * Modifie l'index des réponses valides
+     * @param {number[]} correctAnswers - Index des réponses valide
+     */
+    set correctAnswers(editedCorrectAnswers){
+        this._correctAnswers = editedCorrectAnswers;
+    }
+
+    /**
      * @inheritDoc
      */
     equal(other) {

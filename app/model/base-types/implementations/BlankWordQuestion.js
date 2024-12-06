@@ -47,13 +47,37 @@ class BlankWordQuestion extends Question {
     }
 
     /**
+    * Modifie la première partie de la question
+    * @param {string} editedTextPart1
+    */
+    set textPart1(editedTextPart1){
+        this._textPart1 = editedTextPart1;
+    }
+
+    /**
+    * Modifie la deuxième partie de la question
+    * @param {string} editedTextPart2
+    */
+    set textPart2(editedTextPart2){
+        this._textPart2 = editedTextPart2;
+    }
+
+    /**
+    * Modifie la réponse de la question
+    * @param {string} editedBlankWord
+    */
+    set blankWord(editedBlankWord){
+        this._blankWord = editedBlankWord;
+    }
+
+    /**
      * @inheritDoc
      */
     equal(other) {
         return super.equal(other)
             && other instanceof BlankWordQuestion
             && other.blankWord === this.blankWord
-            && other.textPart1 === this.textPart2
+            && other.textPart1 === this.textPart1
             && other.textPart2 === this.textPart2;
     }
 }

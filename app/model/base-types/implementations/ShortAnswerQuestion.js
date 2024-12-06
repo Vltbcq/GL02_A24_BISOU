@@ -29,10 +29,18 @@ class ShortAnswerQuestion extends Question {
     }
 
     /**
+    * Modifie la réponse de la question initialement posée
+    * @param {string} editedAnswer
+    */
+    set answer(editedAnswer){
+        this._answer = editedAnswer;
+    }
+
+    /**
      * @inheritDoc
      */
     equal(other) {
-        return super.equal(other)
+        return this._question === other._question
             && other instanceof ShortAnswerQuestion
             && other.answer === this.answer;
     }

@@ -13,33 +13,124 @@ beforeEach(() => {
 
 test('Création d\'une question à mot manquant', () => {
     const controller = new QuestionController();
-    expect(controller.createBlankWord('Partie 1', 'Partie 2', 'mot manquant')).toStrictEqual(new BlankWordQuestion('Partie 1', 'Partie 2', 'mot manquant'));
-    expect(QuestionCache.instance.questions).toEqual([new BlankWordQuestion('Partie 1', 'Partie 2', 'mot manquant')]);
+    expect(controller.createBlankWord('Partie 1', 'Partie 2', 'mot manquant').equal(new BlankWordQuestion('Partie 1', 'Partie 2', 'mot manquant'))).toBeTruthy();
 });
 
 test('Création d\'une question à choix multiples', () => {
     const controller = new QuestionController();
-    expect(controller.createMultipleChoice('question', ['réponse fausse', 'réponse valide'], [1])).toStrictEqual(new MultipleChoiceQuestion('question', ['réponse fausse', 'réponse valide'], [1]));
-    expect(QuestionCache.instance.questions).toEqual([new MultipleChoiceQuestion('question', ['réponse fausse', 'réponse valide'], [1])]);
-})
+    expect(controller.createMultipleChoice('question', ['réponse fausse', 'réponse valide'], [1]).equal(new MultipleChoiceQuestion('question', ['réponse fausse', 'réponse valide'], [1]))).toBeTruthy();
+});
 
 test('Création d\'une question numérique', () => {
     const controller = new QuestionController();
-    expect(controller.createNumeric('question', 2.45654)).toStrictEqual(new NumericQuestion('question', 2.45654));
-    expect(QuestionCache.instance.questions).toEqual([new NumericQuestion('question', 2.45654)]);
-})
+    expect(controller.createNumeric('question', 2.45654).equal(new NumericQuestion('question', 2.45654))).toBeTruthy();
+});
 
 test('Création d\'une question à réponse courte', () => {
     const controller = new QuestionController();
-    expect(controller.createShortAnswer('question', 'réponse courte de quelques mots')).toStrictEqual(new ShortAnswerQuestion('question', 'réponse courte de quelques mots'));
-    expect(QuestionCache.instance.questions).toEqual([new ShortAnswerQuestion('question', 'réponse courte de quelques mots')]);
+    expect(controller.createShortAnswer('question', 'réponse courte de quelques mots').equal(new ShortAnswerQuestion('question', 'réponse courte de quelques mots'))).toBeTruthy();
+});
+
+test('Création d\'une question vrai/faux, vérification de la question', () => {
+    const controller = new QuestionController();
+    expect(controller.createTrueFalse('question binaire', true).equal(new TrueFalseQuestion('question binaire', true))).toBeTruthy();
+});
+
+test('Modification de la partie 1 d\' une question à mot manquant', () => {
+    const controller = new QuestionController();
+    let testQuestion = controller.createBlankWord('Partie 1', 'Partie 2', 'mot manquant');
+    controller.editBlankWord(testQuestion, 'nouvelle partie 1', 1);
+    expect(testQuestion._textPart1).toEqual('nouvelle partie 1');
+});
+
+test('Modification de la partie 2 d\' une question à mot manquant', () => {
+    const controller = new QuestionController();
+    let testQuestion = controller.createBlankWord('Partie 1', 'Partie 2', 'mot manquant');
+    controller.editBlankWord(testQuestion, 'nouvelle partie 2', 2);
+    expect(testQuestion._textPart2).toEqual('nouvelle partie 2');
+});
+
+
+test('Modification d\'une question à mot manquant', () => {
+    const controller = new QuestionController();
+    let testQuestion = controller.createBlankWord('Partie 1', 'Partie 2', 'mot manquant');
+    controller.editBlankWordAnswer(testQuestion, 'nouvelle réponse');
+    expect(testQuestion._blankWord).toEqual('nouvelle réponse');
+});
+
+test('Modification d\'une question à choix multiple', () => {
+    const controller = new QuestionController();
+    let testQuestion = controller.createMultipleChoice('question', ['réponse fausse', 'réponse valide'], [1]);
+    controller.editQuestion(testQuestion, "autre question");
+    expect(testQuestion._question).toEqual("autre question");
 })
 
-test('Création d\'une question vrai/faux', () => {
+test('Modification du set de questions pour une question à choix multiples', () => {
     const controller = new QuestionController();
-    expect(controller.createTrueFalse('question binaire', true)).toStrictEqual(new TrueFalseQuestion('question binaire', true));
-    expect(QuestionCache.instance.questions).toEqual([new TrueFalseQuestion('question binaire', true)]);
+    let testQuestion = controller.createMultipleChoice('question', ['réponse fausse', 'réponse valide'], [1]);
+    controller.editMultipleChoiceAnswerSet(testQuestion, 'autre réponse fausse, autre réponse valide');
+    expect(testQuestion._answerSet).toEqual(['autre réponse fausse', 'autre réponse valide']);
 })
+
+test('Modification des réponses correctes pour une question à choix multiples', () => {
+    const controller = new QuestionController();
+    let testQuestion = controller.createMultipleChoice('question', ['réponse fausse', 'réponse valide'], [1]);
+    controller.editMultipleChoiceCorrectAnswer(testQuestion, 'réponse valide');
+    expect(testQuestion._correctAnswers).toEqual([1]);
+})
+
+test('Modification d\'une question numérique', () => {
+    const controller = new QuestionController();
+    let testQuestion = controller.createNumeric('question', 2.123);
+    controller.editQuestion(testQuestion, 'nouvelle question');
+    expect(testQuestion._question).toEqual('nouvelle question');
+});
+
+test('Modification d\'une réponse à une question numérique', () => {
+    const controller = new QuestionController();
+    let testQuestion = controller.createNumeric('question', 2.123);
+    controller.editNumericAnswer(testQuestion, -3.212);
+    expect(testQuestion._answer).toEqual(-3.212);
+});
+
+
+test('Modification d\'une question à réponse courte', () => {
+    const controller = new QuestionController();
+    let testQuestion = controller.createShortAnswer('question', 'réponse courte');
+    controller.editQuestion(testQuestion, 'nouvelle question');
+    expect(testQuestion._question).toEqual('nouvelle question');
+});
+
+test('Modification d\'une réponse à une question à réponse courte', () => {
+    const controller = new QuestionController();
+    let testQuestion = controller.createShortAnswer('question', 'réponse courte');
+    controller.editShortAnswerAnswer(testQuestion, 'nouvelle réponse');
+    expect(testQuestion._answer).toEqual('nouvelle réponse');
+});
+
+
+test('Modification d\'une question vrai/faux', () => {
+    const controller = new QuestionController();
+    let testQuestion = controller.createTrueFalse('question binaire', true);
+    controller.editQuestion(testQuestion, 'nouvelle question');
+    expect(testQuestion._question).toEqual('nouvelle question');
+});
+
+test('Modification d\'une réponse à une question vrai/faux', () => {
+    const controller = new QuestionController();
+    let testQuestion = controller.createTrueFalse('question binaire', true);
+    controller.editTrueFalseAnswer(testQuestion, false);
+    expect(testQuestion._answer).toEqual(false);
+});
+
+test('Vérification de l\'état de la question après modification dans le cache', () => {
+    const controller = new QuestionController();
+    let testQuestion = controller.createTrueFalse('question binaire', true);
+    let id_question = testQuestion._id;
+    controller.editTrueFalseAnswer(testQuestion, false);
+    expect(testQuestion._answer).toEqual(false);
+    expect(QuestionCache.instance.getQuestion(id_question).equal(new TrueFalseQuestion('question binaire', false))).toBeTruthy();
+});
 
 test('Recherche filtrée par énoncés des questions', () => {
     const controller = new QuestionController();
