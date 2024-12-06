@@ -131,3 +131,21 @@ test('Vérification de l\'état de la question après modification dans le cache
     expect(testQuestion._answer).toEqual(false);
     expect(QuestionCache.instance.getQuestion(id_question).equal(new TrueFalseQuestion('question binaire', false))).toBeTruthy();
 });
+
+test('Recherche filtrée par énoncés des questions', () => {
+    const controller = new QuestionController();
+    const numeric = controller.createNumeric("question numérique", 3);
+    const short = controller.createShortAnswer("question à réponse courte", "réponse valide");
+    controller.createTrueFalse("question binaire", true);
+    expect(controller.search("numérique")).toEqual([numeric]);
+    expect(controller.search("réponse courte")).toEqual([short]);
+})
+
+test('Recherche filtrée par type des questions', () => {
+    const controller = new QuestionController();
+    controller.createNumeric("question numérique", 3);
+    const short = controller.createShortAnswer("question à réponse courte", "réponse valide");
+    const trueFalse = controller.createTrueFalse("question binaire", true);
+    expect(controller.search(undefined, 'Réponse courte')[0]).toEqual(short);
+    expect(controller.search(undefined, 'Vrai/Faux')[0]).toEqual(trueFalse);
+})

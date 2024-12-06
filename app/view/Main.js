@@ -7,6 +7,6 @@ program
 
 addQuestionCommands(program);
 
-program.parse();
+program.parse(process.argv);
 
 module.exports = program;

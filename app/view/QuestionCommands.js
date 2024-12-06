@@ -7,6 +7,10 @@ const BlankWordQuestion = require("../model/base-types/implementations/BlankWord
 const MultipleChoiceQuestion = require("../model/base-types/implementations/MultipleChoiceQuestion");
 const {prettyQuestionList} = require("./pretty-printing-tools/QuestionPrinter");
 
+/**
+ * Ajoute les commandes liées aux questions à un programme
+ * @param program - Programme commander auquel les commandes seront ajoutées
+ */
 function addQuestionCommands(program) {
 
     const controller = new QuestionController();
@@ -110,8 +114,10 @@ function addQuestionCommands(program) {
     program
         .command('showquestions')
         .description("Show the questions available")
-        .action(() => {
-            let questions = controller.readAll();
+        .option('-q, --question <question>', 'Defines a substring we are looking for in the wording of the question')
+        .option('-t, --type <type>', 'The type of the question')
+        .action((options) => {
+            let questions = controller.search(options.question, options.type);
             console.log(prettyQuestionList(questions));
         })
 }

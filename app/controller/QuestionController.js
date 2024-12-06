@@ -169,6 +169,23 @@ class QuestionController {
         return QuestionCache.instance.questions;
     }
 
+    /**
+     * Effectue une recherche sur les questions en cache, chaque paramètre est optionnel
+     * @param questionText {string} - String recherchée sur l'énoncé de la question
+     * @param questionType {string} - Type de la question
+     * @returns {Question[]} - Questions filtrées selon les critères passés en paramètre
+     */
+    search(questionText = null, questionType = null) {
+        let result = this.readAll();
+        if (questionText) {
+            result = result.filter(question => question.question.includes(questionText));
+        }
+        if (questionType) {
+            result = result.filter(question => Object.getPrototypeOf(question).constructor.questionType === questionType);
+        }
+        return result;
+    }
+
     // Ajoute une question au cache
     #addToCache(newQuestion) {
         QuestionCache.instance.addQuestion(newQuestion);
