@@ -4,6 +4,7 @@ const ESSerializer = require("esserializer");
 const fs = require("fs");
 const path = require("path");
 const registerAllClasses = require("./ESSerializerInitializer");
+const logger = require("../../security/Logger");
 /**
  * Implémente le cache des examens
  *
@@ -39,6 +40,7 @@ class TestCache {
    * @returns {Test[]} - Liste des examens en cache
    */
   get tests() {
+    logger.info("Accessing to all the tests");
     return deepCloneArray(this._tests);
   }
 
@@ -48,6 +50,7 @@ class TestCache {
    * @returns {Test} - Le test correspondant à l'identifiant
    */
   getTestById(id) {
+    logger.info(`Accessing test id : ${id}`);
     return this._tests.find((t) => t.id === id);
   }
 
@@ -59,6 +62,7 @@ class TestCache {
     if (!(test instanceof Test)) {
       throw new Error("Invalid test object");
     }
+    logger.info(`Adding new test : ${JSON.stringify(test)}`);
     this._tests.push(test);
     this.#saveState();
   }
@@ -71,9 +75,11 @@ class TestCache {
     if (!(test instanceof Test)) {
       throw new Error("Invalid test object");
     }
+    logger.info(`Deleting test of id : ${test.id}`)
     this._tests = this._tests.filter((t) => t.id !== test.id);
     this.#saveState();
   }
+
   /**
    * Mise à jour d'un test dans le cache
    * @param test {Test} - Test
@@ -84,6 +90,7 @@ class TestCache {
     }
     const existingTest = this.getTestById(test.id);
     if (existingTest) {
+      logger.info(`Updating the test id : ${test.id} to new value (${JSON.stringify(test)})`);
       existingTest.questions = test.questions;
       this.#saveState();
     } else {

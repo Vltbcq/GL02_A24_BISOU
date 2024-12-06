@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const ESSerializer = require('esserializer');
 const registerAllClasses = require("./ESSerializerInitializer");
+const logger = require("../../security/Logger");
 
 
 /**
@@ -42,6 +43,7 @@ class QuestionCache {
      * @returns {Question[]} - Liste des questions en cache
      */
     get questions() {
+        logger.info("Access made to the question list");
         return deepCloneArray(this._questions);
     }
 
@@ -51,9 +53,14 @@ class QuestionCache {
      */
     addQuestion(question) {
         if (!(question instanceof Question)) {
-            throw new Error("Something that was'nt a question was passed to the question cache");
+            throw new Error("Something that wasn't a question was passed to the question cache");
         }
+        logger.info(`Adding question (${JSON.stringify(question)}) to the question list`);
         this._questions.push(question);
+        this.#saveState()
+    }
+
+    saveEdition(){
         this.#saveState()
     }
 
@@ -68,6 +75,19 @@ class QuestionCache {
         if (jsonData) {
             this._questions = ESSerializer.deserialize(jsonData);
         }
+    }
+
+    /**
+     * Recherche de question à partir de l'id
+     * @param {number} id - ID de la question
+     * @returns {Question} - Question associée à l'id
+     */
+    getQuestion(id) {
+        let foundQuestion = this._questions.find(question => question.id === id);
+        if (foundQuestion === undefined){
+            throw new Error("This question doesn't exist. Please verify the ID of the question you want.")
+        }
+        return foundQuestion;
     }
 }
 

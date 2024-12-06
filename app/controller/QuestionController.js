@@ -4,6 +4,7 @@ const MultipleChoiceQuestion = require('../model/base-types/implementations/Mult
 const NumericQuestion = require('../model/base-types/implementations/NumericQuestion')
 const ShortAnswerQuestion = require('../model/base-types/implementations/ShortAnswerQuestion')
 const TrueFalseQuestion = require("../model/base-types/implementations/TrueFalseQuestion");
+const Question = require('../model/base-types/Question')
 
 /**
  * Contrôleur des questions, gère les opérations portant sur celle-ci
@@ -72,16 +73,123 @@ class QuestionController {
     }
 
     /**
+     * Modifie l'énoncé d'une question
+     * @param {Question} question
+     * @param {string} editedText
+     */
+    editQuestion(questionToEdit, editedText){
+        questionToEdit.question = editedText;
+        QuestionCache.instance.saveEdition();
+    }
+
+    /**
+     * Modifie une question à mot manquant
+     * @param {BlankWordQuestion} blankWordQuestion
+     * @param {string} editedText
+     * @param {number} part
+     */
+    editBlankWord(blankWordQuestion, editedText, part){
+        if (part === 1)
+            blankWordQuestion.textPart1 = editedText;
+        else if (part === 2)
+            blankWordQuestion.textPart2 = editedText;
+        QuestionCache.instance.saveEdition();
+    }
+
+    /**
+     * Modifie une réponse à une question à mot manquant
+     * @param {BlankWordQuestion} blankWordQuestion
+     * @param {string} editedText
+     */
+    editBlankWordAnswer(blankWordQuestion, editedText){
+        blankWordQuestion.blankWord = editedText;
+        QuestionCache.instance.saveEdition();
+    }
+
+    /**
+     * Modifie l'ensemble des réponses d'une question à choix multiples
+     * @param {MultipleChoiceQuestion} multipleChoiceQuestion
+     * @param {string} editedText
+     */
+    editMultipleChoiceAnswerSet(multipleChoiceQuestion, editedText){
+        const answersetList = editedText.split(',').map(item => item.trim());
+        multipleChoiceQuestion.answerSet = answersetList;
+        QuestionCache.instance.saveEdition();
+    }
+
+    /**
+     * Modifie les réponses correctes des réponses d'une question à choix multiples
+     * @param {MultipleChoiceQuestion} multipleChoiceQuestion
+     * @param {string} editedText
+     */
+    editMultipleChoiceCorrectAnswer(multipleChoiceQuestion, editedText){
+        const correctAnswers = editedText.split(',').map(item => item.trim());
+        const indexes = correctAnswers.map(answer => multipleChoiceQuestion._answerSet.indexOf(answer));
+        if (indexes.includes(-1)) {
+            throw new Error("Be careful. Some of the answers you gave might not be in the answet set.");
+        }
+        multipleChoiceQuestion.correctAnswers = indexes;
+        QuestionCache.instance.saveEdition();
+    }
+
+    /**
+     * Modifie une réponse à une question numérique
+     * @param {NumericQuestion} numericQuestion
+     * @param {number} editedText
+     */
+    editNumericAnswer(numericQuestion, editedText){
+        numericQuestion.answer = editedText;
+        QuestionCache.instance.saveEdition();
+    }
+
+    /**
+     * Modifie une réponse à une question à réponse courte
+     * @param {ShortAnswerQuestion} shortAnswerQuestion
+     * @param {string} editedText
+     */
+    editShortAnswerAnswer(shortAnswerQuestion, editedText){
+        shortAnswerQuestion.answer = editedText;
+        QuestionCache.instance.saveEdition();
+    }
+
+    /**
+     * Modifie une réponse à une question vrai/faux
+     * @param {TrueFalseQuestion} trueFalseQuestion
+     * @param {boolean} editedText
+     */
+    editTrueFalseAnswer(trueFalseQuestion, editedText){
+        trueFalseQuestion.answer = editedText;
+        QuestionCache.instance.saveEdition();
+    }
+
+    /**
      * @returns {Question[]} - Toutes les questions en cache
      */
     readAll() {
         return QuestionCache.instance.questions;
     }
 
+    /**
+     * Effectue une recherche sur les questions en cache, chaque paramètre est optionnel
+     * @param questionText {string} - String recherchée sur l'énoncé de la question
+     * @param questionType {string} - Type de la question
+     * @returns {Question[]} - Questions filtrées selon les critères passés en paramètre
+     */
+    search(questionText = null, questionType = null) {
+        let result = this.readAll();
+        if (questionText) {
+            result = result.filter(question => question.question.includes(questionText));
+        }
+        if (questionType) {
+            result = result.filter(question => Object.getPrototypeOf(question).constructor.questionType === questionType);
+        }
+        return result;
+    }
+
     // Ajoute une question au cache
     #addToCache(newQuestion) {
         QuestionCache.instance.addQuestion(newQuestion);
-    }
+    }    
 }
 
 module.exports = QuestionController;
