@@ -57,6 +57,10 @@ class QuestionCache {
         this.#saveState()
     }
 
+    saveEdition(){
+        this.#saveState()
+    }
+
     // à appeler chaque fois qu'une modification est faite dans le cache
     #saveState() {
         const json = ESSerializer.serialize(this._questions);

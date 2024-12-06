@@ -79,7 +79,7 @@ class QuestionController {
      */
     editQuestion(questionToEdit, editedText){
         questionToEdit.question = editedText;
-        QuestionCache.instance.saveState();
+        QuestionCache.instance.saveEdition();
     }
 
     /**
@@ -93,7 +93,7 @@ class QuestionController {
             blankWordQuestion.textPart1 = editedText;
         else if (part === 2)
             blankWordQuestion.textPart2 = editedText;
-        QuestionCache.instance.saveState();
+        QuestionCache.instance.saveEdition();
     }
 
     /**
@@ -103,7 +103,7 @@ class QuestionController {
      */
     editBlankWordAnswer(blankWordQuestion, editedText){
         blankWordQuestion.blankWord = editedText;
-        QuestionCache.instance.saveState();
+        QuestionCache.instance.saveEdition();
     }
 
     /**
@@ -114,7 +114,7 @@ class QuestionController {
     editMultipleChoiceAnswerSet(multipleChoiceQuestion, editedText){
         const answersetList = editedText.split(',').map(item => item.trim());
         multipleChoiceQuestion.answerSet = answersetList;
-        QuestionCache.instance.saveState();
+        QuestionCache.instance.saveEdition();
     }
 
     /**
@@ -129,7 +129,7 @@ class QuestionController {
             throw new Error("Be careful. Some of the answers you gave might not be in the answet set.");
         }
         multipleChoiceQuestion.correctAnswers = indexes;
-        QuestionCache.instance.saveState();
+        QuestionCache.instance.saveEdition();
     }
 
     /**
@@ -139,7 +139,7 @@ class QuestionController {
      */
     editNumericAnswer(numericQuestion, editedText){
         numericQuestion.answer = editedText;
-        QuestionCache.instance.saveState();
+        QuestionCache.instance.saveEdition();
     }
 
     /**
@@ -149,7 +149,7 @@ class QuestionController {
      */
     editShortAnswerAnswer(shortAnswerQuestion, editedText){
         shortAnswerQuestion.answer = editedText;
-        QuestionCache.instance.saveState();
+        QuestionCache.instance.saveEdition();
     }
 
     /**
@@ -159,7 +159,7 @@ class QuestionController {
      */
     editTrueFalseAnswer(trueFalseQuestion, editedText){
         trueFalseQuestion.answer = editedText;
-        QuestionCache.instance.saveState();
+        QuestionCache.instance.saveEdition();
     }
 
     /**

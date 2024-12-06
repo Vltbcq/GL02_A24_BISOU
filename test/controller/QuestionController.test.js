@@ -68,17 +68,16 @@ test('Modification d\'une question à choix multiple', () => {
 test('Modification du set de questions pour une question à choix multiples', () => {
     const controller = new QuestionController();
     let testQuestion = controller.createMultipleChoice('question', ['réponse fausse', 'réponse valide'], [1]);
-    controller.editMultipleChoiceAnswerSet(testQuestion, ['autre réponse fausse', 'autre réponse valide']);
+    controller.editMultipleChoiceAnswerSet(testQuestion, 'autre réponse fausse, autre réponse valide');
     expect(testQuestion._answerSet).toEqual(['autre réponse fausse', 'autre réponse valide']);
 })
 
 test('Modification des réponses correctes pour une question à choix multiples', () => {
     const controller = new QuestionController();
     let testQuestion = controller.createMultipleChoice('question', ['réponse fausse', 'réponse valide'], [1]);
-    controller.editMultipleChoiceCorrectAnswer(testQuestion, [0]);
-    expect(testQuestion._correctAnswers).toEqual([0]);
+    controller.editMultipleChoiceCorrectAnswer(testQuestion, 'réponse valide');
+    expect(testQuestion._correctAnswers).toEqual([1]);
 })
-
 
 test('Modification d\'une question numérique', () => {
     const controller = new QuestionController();
