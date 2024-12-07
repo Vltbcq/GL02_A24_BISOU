@@ -4,6 +4,7 @@ const deepCloneArray = require('../utils/ArrayUtils');
  * Définis page 25 du cahier des charges
  */
 class Test {
+
     /**
      * Instancie un examen
      */

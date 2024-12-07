@@ -6,7 +6,7 @@
  * @return {string} - Chaîne de caractères "human-readable"
  */
 function prettyTest(test) {
-    const testString = `Test : ${test.name}`;
+    testString = `Test : ${test.id}`;
     let questionString = "Questions :";
     for (const question of test.questions) {
         questionString += `\n- ${question.question}`;

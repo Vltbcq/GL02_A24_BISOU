@@ -9,12 +9,17 @@ function addTestCommands(program) {
     program
         .command('mktest')
         .description("Create a new test")
-        .argument('<questions>', 'The initials questions of the test')
-        .action((questionsIds) => {
-            let test = controller.createTest();
-            questions.forEach(questionsIds => {
-                controller.addQuestionToTest(test, QuestionCache.getQuestionbyId(questionsIds));
-            })
+        .argument('[questionsIds...]', 'The ids of the initial questions of the test', [])
+        .action((questionsIds = []) => {
+            const test = controller.createTest();
+            questionsIds.forEach(id => {
+                const question = QuestionCache.instance.getQuestion(id);
+                if (question) {
+                    controller.addQuestionToTest(test, question);
+                } else {
+                    console.log(`Question with id ${id} not found.`);
+                }
+            });
         })
     program
         .command('showtests')
@@ -23,19 +28,51 @@ function addTestCommands(program) {
             let tests = controller.readAll();
             console.log(prettyTestList(tests));
         })
-    program
+        program
         .command('rmtest')
         .description("Delete a test")
         .argument('<id>', 'The id of the test to delete')
         .action((id) => {
-            controller.deleteTest(id);
+            const test = controller.readAll().find(t => t.id === parseInt(id));
+            if (test) {
+                controller.deleteTest(test);
+                console.log(`Test with id ${id} deleted.`);
+            } else {
+                console.log(`Test with id ${id} not found.`);
+            }
         })
-    program
+        program
         .command('editest')
         .description("Edit a test")
         .argument('<id>', 'The id of the test to edit')
-        .action((id) => {
-            console.log("Not implemented yet");
+        .option('-r, --remove <questionId>', 'Remove a question from the test')
+        .option('-a, --add <questionId>', 'Add a question to the test')
+        .action((id, options) => {
+            const test = controller.readAll().find(t => t.id === parseInt(id));
+            if (!test) {
+                console.log(`Test with id ${id} not found.`);
+                return;
+            }
+
+            if (options.remove) {
+                const question = QuestionCache.instance.getQuestion(parseInt(options.remove));
+                if (question) {
+                    controller.removeQuestionFromTest(test, question);
+                    console.log(`Question with id ${options.remove} removed from test ${id}.`);
+                } else {
+                    console.log(`Question with id ${options.remove} not found.`);
+                }
+            }
+
+            if (options.add) {
+                const question = QuestionCache.instance.getQuestion(parseInt(options.add));
+                if (question) {
+                    controller.addQuestionToTest(test, question);
+                    console.log(`Question with id ${options.add} added to test ${id}.`);
+                } else {
+                    console.log(`Question with id ${options.add} not found.`);
+                }
+            }
         })
 
 }
