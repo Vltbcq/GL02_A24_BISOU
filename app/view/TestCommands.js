@@ -74,6 +74,15 @@ function addTestCommands(program) {
                 }
             }
         })
+        program
+        .command('veriftest')
+        .description("Verify that a test is valid")
+        .argument('<id>', 'The id of the test to verify')
+        .action((id) => {
+            console.log('Not implemented yet');
+            })
+        
+        
 
 }
 module.exports = addTestCommands;
