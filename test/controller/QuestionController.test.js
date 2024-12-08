@@ -149,3 +149,11 @@ test('Recherche filtrée par type des questions', () => {
     expect(controller.search(undefined, 'Réponse courte')[0]).toEqual(short);
     expect(controller.search(undefined, 'Vrai/Faux')[0]).toEqual(trueFalse);
 })
+
+test("Suppression d'une question", () => {
+    const controller = new QuestionController();
+    let testQuestion = controller.createTrueFalse('question à supprimer', true);
+    controller.deleteQuestion(testQuestion);
+    expect(QuestionCache.instance.questions).toEqual([]);
+});
+  

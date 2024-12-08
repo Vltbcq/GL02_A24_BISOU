@@ -186,10 +186,23 @@ class QuestionController {
         return result;
     }
 
+    /**
+    * Supression d'une question et la retire du cache
+    * @param question {Question} - Question à supprimer
+    */
+    deleteQuestion(question) {
+        this.#removeFromCache(question);
+    }
+    
     // Ajoute une question au cache
     #addToCache(newQuestion) {
         QuestionCache.instance.addQuestion(newQuestion);
-    }    
+    }
+
+    // Supprime une question du cache
+    #removeFromCache(question) {
+        QuestionCache.instance.removeQuestion(question);
+    }
 }
 
 module.exports = QuestionController;
