@@ -3,6 +3,8 @@ const {prettyTestList} = require('./pretty-printing-tools/TestPrinter');
 const QuestionCache = require('../controller/utils/QuestionCache');
 const TestCache = require('../controller/utils/TestCache');
 const inquirer = require('inquirer').default;
+const Table = require('cli-table3');
+const figlet = require('figlet');
 
 function addTestCommands(program) {
 
@@ -107,10 +109,9 @@ function addTestCommands(program) {
                 console.log(`Test with id ${id} not found.`);
                 return;
             }
-            //check la validité du test
+
             let score = 0;
-            const correctQuestions = [];
-            const incorrectQuestions = [];
+            const results = [];
 
             for (const question of test.questions) {
                 const answer = await inquirer.prompt([{
@@ -119,21 +120,43 @@ function addTestCommands(program) {
                     message: question.question
                 }]);
 
+                results.push({
+                    question: question.question,
+                    userAnswer: answer.userAnswer,
+                    correctAnswer: question.answer,
+                    isCorrect: answer.userAnswer === question.answer
+                });
+
                 if (answer.userAnswer === question.answer) {
                     score++;
-                    correctQuestions.push(question.question);
-                } else {
-                    incorrectQuestions.push(question.question);
                 }
             }
 
-            console.log(`Your score: ${score}/${test.questions.length}`);
-            console.log('Correct questions:');
-            correctQuestions.forEach(q => console.log(q));
-            console.log('Incorrect questions:');
-            incorrectQuestions.forEach(q => console.log(q));
+            const table = new Table({
+                head: ['Result', 'Questions', 'User Answers', 'Correct Answers'],
+                colWidths: [20, 50, 50, 50]
+            });
 
-        })
+            results.forEach(result => {
+                table.push([
+                    result.isCorrect ? 'Correct' : 'Incorrect',
+                    result.question,
+                    result.userAnswer,
+                    result.correctAnswer
+                ]);
+            });
+
+            console.log(table.toString());
+            figlet(`Score : ${score}/${test.questions.length}`, (err, data) => {
+                if (err) {
+                    console.log('Something went wrong...');
+                    console.dir(err);
+                    return;
+                }
+                console.log(data);
+            });
+        });
+        
 
 
 
