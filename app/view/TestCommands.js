@@ -2,6 +2,7 @@ const TestController = require('../controller/TestController');
 const Test = require('../model/base-types/Test');
 const {prettyTestList} = require('./pretty-printing-tools/TestPrinter');
 const QuestionCache = require('../controller/utils/QuestionCache');
+const TestCache = require('../controller/utils/TestCache');
 
 function addTestCommands(program) {
 
@@ -33,7 +34,7 @@ function addTestCommands(program) {
         .description("Delete a test")
         .argument('<id>', 'The id of the test to delete')
         .action((id) => {
-            const test = controller.readAll().find(t => t.id === parseInt(id));
+            const test = TestCache.instance.getTestById(parseInt(id));
             if (test) {
                 controller.deleteTest(test);
                 console.log(`Test with id ${id} deleted.`);
@@ -48,7 +49,7 @@ function addTestCommands(program) {
         .option('-r, --remove <questionId>', 'Remove a question from the test')
         .option('-a, --add <questionId>', 'Add a question to the test')
         .action((id, options) => {
-            const test = controller.readAll().find(t => t.id === parseInt(id));
+            const test = TestCache.instance.getTestById(parseInt(id));
             if (!test) {
                 console.log(`Test with id ${id} not found.`);
                 return;
@@ -80,7 +81,7 @@ function addTestCommands(program) {
         .argument('<id>', 'The id of the test to verify')
         //.argument('<vCardFile>', 'The vCard file needed the verification')
         .action((id) => {
-            const test = controller.readAll().find(t => t.id === parseInt(id));
+            const test = TestCache.instance.getTestById(parseInt(id));
             if (!test) {
                 console.log(`Test with id ${id} not found.`);
                 return;
