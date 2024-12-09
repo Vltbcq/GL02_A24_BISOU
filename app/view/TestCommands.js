@@ -1,7 +1,7 @@
 const TestController = require('../controller/TestController');
-const Test = require('../model/base-types/Test');
 const {prettyTestList} = require('./pretty-printing-tools/TestPrinter');
 const QuestionCache = require('../controller/utils/QuestionCache');
+const TestCache = require('../controller/utils/TestCache');
 const inquirer = require('inquirer').default;
 
 function addTestCommands(program) {
@@ -35,7 +35,7 @@ function addTestCommands(program) {
         .description("Delete a test")
         .argument('<id>', 'The id of the test to delete')
         .action((id) => {
-            const test = controller.readAll().find(t => t.id === parseInt(id));
+            const test = TestCache.instance.getTestById(parseInt(id));
             if (test) {
                 controller.deleteTest(test);
                 console.log(`Test with id ${id} deleted.`);
@@ -49,7 +49,7 @@ function addTestCommands(program) {
             .argument('<id>', 'The id of the test to edit')
             .argument('<questionId>', 'The id of the question to add or remove')
             .action(async (id, questionId) => {
-                const test = controller.readAll().find(t => t.id === parseInt(id));
+                const test = TestCache.instance.getTestById(parseInt(id));
                 if (!test) {
                     console.log(`Test with id ${id} not found.`);
                     return;
