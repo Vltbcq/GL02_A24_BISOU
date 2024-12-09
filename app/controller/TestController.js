@@ -54,6 +54,13 @@ class TestController {
       this.#removeFromCache(test);
    }
 
+   /**
+    * @returns {Test[]} - retourne tout les examens du cache
+    */
+   readAll() {
+      return TestCache.instance.tests;
+   }
+
    // Ajoute un examen au cache
    #addToCache(newTest) {
       TestCache.instance.addTest(newTest);
