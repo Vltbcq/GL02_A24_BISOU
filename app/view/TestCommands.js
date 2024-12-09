@@ -78,7 +78,7 @@ function addTestCommands(program) {
                     console.log(`Question with id ${questionId} removed from test ${id}.`);
                 }
             })
-        }
+        
     program
         .command('veriftest') // en attente de la creation vCard
         .description("Verify that a test is valid")
