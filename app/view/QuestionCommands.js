@@ -123,6 +123,18 @@ function addQuestionCommands(program) {
             let questions = controller.search(options.question, options.type);
             console.log(prettyQuestionList(questions));
         })
+
+    program
+        .command('rmquestion')
+        .description("Delete a question")
+        .action(function (id) {
+            try{
+                let questionToDelete = QuestionCache.instance.getQuestion(id);
+                controller.deleteQuestion(questionToDelete);
+            } catch(error){
+                console.error(error.message);
+            }
+        })
 }
 
 module.exports = addQuestionCommands;

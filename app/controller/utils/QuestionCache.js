@@ -89,6 +89,19 @@ class QuestionCache {
         }
         return foundQuestion;
     }
+
+    /**
+     * Suppression d'une question du cache
+     * @param question {Question} - Question
+     */
+  removeQuestion(question) {
+    if (!(question instanceof Question)) {
+      throw new Error("Invalid question object");
+    }
+    logger.info(`Deleting question of id : ${question.id}`)
+    this._questions = this._questions.filter((q) => q.id !== question.id);
+    this.#saveState();
+  }
 }
 
 module.exports = QuestionCache;
