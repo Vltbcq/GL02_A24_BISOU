@@ -125,7 +125,7 @@ function addQuestionCommands(program) {
         })
 
     program
-        .command('deletequestion')
+        .command('rmquestion')
         .description("Delete a question")
         .action(function (id) {
             try{
