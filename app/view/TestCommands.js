@@ -1,7 +1,7 @@
 const TestController = require('../controller/TestController');
-const Test = require('../model/base-types/Test');
-const { prettyTestList } = require('./pretty-printing-tools/TestPrinter');
+const {prettyTestList} = require('./pretty-printing-tools/TestPrinter');
 const QuestionCache = require('../controller/utils/QuestionCache');
+const TestCache = require('../controller/utils/TestCache');
 const inquirer = require('inquirer').default;
 
 function addTestCommands(program) {
@@ -21,6 +21,7 @@ function addTestCommands(program) {
                     console.log(`Question with id ${id} not found.`);
                 }
             });
+            console.log(`Test created with id ${test.id}.`);
         })
     program
         .command('showtests')
@@ -34,7 +35,7 @@ function addTestCommands(program) {
         .description("Delete a test")
         .argument('<id>', 'The id of the test to delete')
         .action((id) => {
-            const test = controller.readAll().find(t => t.id === parseInt(id));
+            const test = TestCache.instance.getTestById(parseInt(id));
             if (test) {
                 controller.deleteTest(test);
                 console.log(`Test with id ${id} deleted.`);
@@ -42,39 +43,42 @@ function addTestCommands(program) {
                 console.log(`Test with id ${id} not found.`);
             }
         })
-    program
-        .command('editest')
-        .description("Edit a test")
-        .argument('<id>', 'The id of the test to edit')
-        .option('-r, --remove <questionId>', 'Remove a question from the test')
-        .option('-a, --add <questionId>', 'Add a question to the test')
-        .action((id, options) => {
-            const test = controller.readAll().find(t => t.id === parseInt(id));
-            if (!test) {
-                console.log(`Test with id ${id} not found.`);
-                return;
-            }
-
-            if (options.remove) {
-                const question = QuestionCache.instance.getQuestion(parseInt(options.remove));
-                if (question) {
-                    controller.removeQuestionFromTest(test, question);
-                    console.log(`Question with id ${options.remove} removed from test ${id}.`);
-                } else {
-                    console.log(`Question with id ${options.remove} not found.`);
+        program
+            .command('editest')
+            .description("Edit a test")
+            .argument('<id>', 'The id of the test to edit')
+            .argument('<questionId>', 'The id of the question to add or remove')
+            .action(async (id, questionId) => {
+                const test = TestCache.instance.getTestById(parseInt(id));
+                if (!test) {
+                    console.log(`Test with id ${id} not found.`);
+                    return;
                 }
-            }
 
-            if (options.add) {
-                const question = QuestionCache.instance.getQuestion(parseInt(options.add));
-                if (question) {
+                const { action } = await inquirer.prompt([
+                    {
+                        type: 'list',
+                        name: 'action',
+                        message: 'Do you want to add or remove the question?',
+                        choices: ['Add', 'Remove']
+                    }
+                ]);
+
+                const question = QuestionCache.instance.getQuestion(parseInt(questionId));
+                if (!question) {
+                    console.log(`Question with id ${questionId} not found.`);
+                    return;
+                }
+
+                if (action === 'Add') {
                     controller.addQuestionToTest(test, question);
-                    console.log(`Question with id ${options.add} added to test ${id}.`);
-                } else {
-                    console.log(`Question with id ${options.add} not found.`);
+                    console.log(`Question with id ${questionId} added to test ${id}.`);
+                } else if (action === 'Remove') {
+                    controller.removeQuestionFromTest(test, question);
+                    console.log(`Question with id ${questionId} removed from test ${id}.`);
                 }
-            }
-        })
+            })
+        }
     program
         .command('veriftest') // en attente de la creation vCard
         .description("Verify that a test is valid")
