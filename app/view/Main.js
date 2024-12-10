@@ -1,6 +1,7 @@
 const { program } = require('commander');
 const addQuestionCommands = require('./QuestionCommands');
 const addVCardCommands = require('./VCardCommands')
+const addTestCommands = require('./TestCommands');
 
 program
     .name("SRU Tests Manager by Bisou")
@@ -8,6 +9,7 @@ program
 
 addQuestionCommands(program);
 addVCardCommands(program);
+addTestCommands(program);
 
 program.parse(process.argv);
 
