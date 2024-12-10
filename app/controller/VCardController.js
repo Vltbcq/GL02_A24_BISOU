@@ -29,14 +29,18 @@ class VCardController{
      * @returns {[]string} - Tableau contenant les informations de la vCard
      */
     tabvCard(id){
-        let vCardContent = fs.readFileSync(`${vcard_path}/${id}.vcf`, 'utf-8');
-        let name = vCardContent.match(/FN;CHARSET=UTF-8:(.*)/)[1].trim();
-        let phone = vCardContent.match(/TEL;TYPE=WORK,VOICE:(.*)/)[1].trim();
-        let mail = vCardContent.match(/EMAIL;CHARSET=UTF-8;type=HOME,INTERNET:(.*)/)[1].trim();
-        let full_name = name.split(" ");
-        let firstname = full_name[0];
-        let lastname = full_name[1];
-        return [firstname, lastname, phone, mail]
+        if(this.isCorrectId(id)){
+            let vCardContent = fs.readFileSync(`${vcard_path}/${id}.vcf`, 'utf-8');
+            let name = vCardContent.match(/FN;CHARSET=UTF-8:(.*)/)[1].trim();
+            let phone = vCardContent.match(/TEL;TYPE=WORK,VOICE:(.*)/)[1].trim();
+            let mail = vCardContent.match(/EMAIL;CHARSET=UTF-8;type=HOME,INTERNET:(.*)/)[1].trim();
+            let full_name = name.split(" ");
+            let firstname = full_name[0];
+            let lastname = full_name[1];
+            return [firstname, lastname, phone, mail]
+        } else{
+            throw new Error("L'ID demandé n'existe pas");
+        }
     }
 
     /**
@@ -97,7 +101,11 @@ class VCardController{
      * @param {number} id - ID de la vCard 
      */
     deleteVCard(id){
+        if(this.isCorrectId(id)){
         fs.unlinkSync(`${vcard_path}/${id}.vcf`);
+        } else{
+        throw new Error("L'ID demandé n'existe pas");
+        }
     }
 
     /**
@@ -115,6 +123,15 @@ class VCardController{
         } else {
             return -1
         }
+    }
+
+    isCorrectId(id) {
+        const files = fs.readdirSync(vcard_path);
+        const idName = id.toString();
+        return files.some((file) => {
+            let fileName = path.basename(file, path.extname(file));
+            return fileName === idName;
+        });
     }
 }
 

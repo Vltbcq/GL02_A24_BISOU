@@ -26,24 +26,28 @@ function addVCardCommands(program) {
         .option('--phone <phone>','Option to edit the phone of a vCard')
         .option('--mail <mail>','Option to edit the mail of a vCard')
         .action(function (id, options) {
-            let tab = controller.tabvCard(id);
-            if (options.firstname){
-                controller.editFirstName(tab, options.firstname);
-                logger.info(`You're updating the first name to ${options.firstname} on the vCard`)
+            try{
+                let tab = controller.tabvCard(id);
+                if (options.firstname){
+                    controller.editFirstName(tab, options.firstname);
+                    logger.info(`You're updating the first name to ${options.firstname} on the vCard`)
+                }
+                if (options.lastname){
+                    controller.editLastName(tab, options.lastname);
+                    logger.info(`You're updating the first name to ${options.lastname} on the vCard`)
+                }
+                if (options.phone){
+                    controller.editPhone(tab, options.phone);
+                    logger.info(`You're updating the first name to ${options.phone} on the vCard`)
+                }
+                if (options.mail){
+                    controller.editMail(tab, options.mail);
+                    logger.info(`You're updating the first name to ${options.mail} on the vCard`)
+                }
+                controller.editvCard(id, tab);    
+            } catch(error){
+                console.error(error.message);
             }
-            if (options.lastname){
-                controller.editLastName(tab, options.lastname);
-                logger.info(`You're updating the first name to ${options.lastname} on the vCard`)
-            }
-            if (options.phone){
-                controller.editPhone(tab, options.phone);
-                logger.info(`You're updating the first name to ${options.phone} on the vCard`)
-            }
-            if (options.mail){
-                controller.editMail(tab, options.mail);
-                logger.info(`You're updating the first name to ${options.mail} on the vCard`)
-            }
-            controller.editvCard(id, tab);
         });
 
 
@@ -52,8 +56,12 @@ function addVCardCommands(program) {
         .description('Delete a vCard that already exists')
         .argument('<id>','ID of the vCard you want to delete')
         .action((id) => {
-            controller.deleteVCard(id);
-            logger.info(`${id}.vcf has been deleted`);
+            try{
+                controller.deleteVCard(id);
+                logger.info(`${id}.vcf has been deleted`);
+            } catch(error){
+                console.error(error.message);
+            }
         })
 }
 
