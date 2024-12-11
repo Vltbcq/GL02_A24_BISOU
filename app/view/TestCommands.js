@@ -3,6 +3,11 @@ const {prettyTestList} = require('./pretty-printing-tools/TestPrinter');
 const QuestionCache = require('../controller/utils/QuestionCache');
 const TestCache = require('../controller/utils/TestCache');
 const inquirer = require('inquirer').default;
+const NumericQuestion = require('../model/base-types/implementations/NumericQuestion')
+const BlankWordQuestion = require('../model/base-types/implementations/BlankWordQuestion')
+const MultipleChoiceQuestion = require('../model/base-types/implementations/MultipleChoiceQuestion')
+const TrueFalseQuestion = require('../model/base-types/implementations/TrueFalseQuestion')
+const ShortAnswerQuestion = require('../model/base-types/implementations/ShortAnswerQuestion')
 
 function addTestCommands(program) {
 
@@ -79,5 +84,29 @@ function addTestCommands(program) {
                 }
             });
 
+        program
+            .command('profile')
+            .argument('<id>', 'ID of the test you want to get the test profile')
+            .action((id) => {
+                try{
+                    let tests = this.readAll()
+                    controller.testProfile(id, tests);
+                } catch(error){
+                    console.error(error);
+                }
+                
+            })
+
+        program
+            .command('comparison')
+            .argument('<id>','ID of the test you want to compare')
+            .action((id) => {
+                try{
+                    tests = controller.readAll();
+                    controller.compare(id, tests);
+                } catch(error){
+                    console.error(error);
+                }
+            })
 }
 module.exports = addTestCommands;

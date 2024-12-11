@@ -1,4 +1,5 @@
 const deepCloneArray = require('../utils/ArrayUtils');
+
 /**
  * Représentation logique d'un examen
  * Définis page 25 du cahier des charges
@@ -76,6 +77,21 @@ class Test {
      */
     containsQuestion(question) {
         return this._questions.some(item => item.equal(question));
+    }
+
+    /**
+     * Nombre de questions d'un certain type dans un exam 
+     * @param {*} type - Type de question qu'on veut compter
+     * @returns 
+     */
+    getTypeOfQuestionNumber(type){
+        let count = 0;
+        this._questions.forEach(question => {
+            if (question instanceof type){
+                count ++;
+            }
+        })
+        return count;
     }
 }
 
