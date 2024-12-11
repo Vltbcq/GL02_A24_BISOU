@@ -19,7 +19,7 @@ function addVCardCommands(program) {
 
     program
         .command('editvcard')
-        .description("Edit a vCard that already exists")
+        .description("Edit a vCard that already exists. Please use 'npm run launch -- <id> [--<option-name> <option-value>]' if you want to edit a vCard.")
         .argument('<id>','ID of the vCard you want to edit')
         .option('--firstname <firstname>','Option to edit the first name of a vCard')
         .option('--lastname <lastname>','Option to edit the last name of a vCard')
