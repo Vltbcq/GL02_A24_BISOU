@@ -203,11 +203,9 @@ class TestController {
  */
 testToCompareStats(testId, tests){
    let testToCompare = tests.find(test => test._id === parseInt(testId));
-   console.log(testToCompare)
    if (testToCompare === undefined){
       throw new Error("Can't find the test, please make sure that you entered the good ID")
    }
-   console.log(this.avgStats(testToCompare))
    return this.avgStats(testToCompare);
 }
 
@@ -220,11 +218,9 @@ testToCompareStats(testId, tests){
 
 otherTestsStats(testId, tests){
    let otherTests = tests.filter(test => test._id !== testId);
-   console.log(otherTests);
    if (otherTests.length === 0){
       throw new Error("There is no tests to compare")
    }
-   console.log(this.globalAvgStats(otherTests));
    return this.globalAvgStats(otherTests);
 }
 
