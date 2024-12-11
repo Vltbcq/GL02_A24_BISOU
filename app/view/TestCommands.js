@@ -86,11 +86,13 @@ function addTestCommands(program) {
 
         program
             .command('profile')
+            .description('Create a visualization of test profile')
             .argument('<id>', 'ID of the test you want to get the test profile')
             .action((id) => {
                 try{
                     let tests = this.readAll()
                     controller.testProfile(id, tests);
+                    logger.info("Visualization of test profile has been created")
                 } catch(error){
                     console.error(error);
                 }
@@ -99,11 +101,13 @@ function addTestCommands(program) {
 
         program
             .command('comparison')
+            .description('Create a visualization of test comparisons')
             .argument('<id>','ID of the test you want to compare')
             .action((id) => {
                 try{
                     tests = controller.readAll();
                     controller.compare(id, tests);
+                    logger.info("Visualization of test comparisons has been created")
                 } catch(error){
                     console.error(error);
                 }
