@@ -17,8 +17,8 @@ class QuestionController {
      * @param blankWord {string} - Mot manquant
      * @return {BlankWordQuestion} - Question créée
      */
-    createBlankWord(textPart1, textPart2, blankWord) {
-        let newQuestion = new BlankWordQuestion(textPart1, textPart2, blankWord);
+    createBlankWord(question, textPart1, textPart2, blankWord) {
+        let newQuestion = new BlankWordQuestion(question, textPart1, textPart2, blankWord);
         this.#addToCache(newQuestion);
         return newQuestion;
     }

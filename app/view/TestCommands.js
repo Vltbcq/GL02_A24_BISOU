@@ -5,6 +5,12 @@ const TestCache = require('../controller/utils/TestCache');
 const inquirer = require('inquirer').default;
 const Table = require('cli-table3');
 const figlet = require('figlet');
+const MultipleChoiceQuestion = require('../model/base-types/implementations/MultipleChoiceQuestion');
+const TrueFalseQuestion = require('../model/base-types/implementations/TrueFalseQuestion');
+const NumericQuestion = require('../model/base-types/implementations/NumericQuestion');
+const ShortAnswerQuestion = require('../model/base-types/implementations/ShortAnswerQuestion');
+const BlankWordQuestion = require('../model/base-types/implementations/BlankWordQuestion');
+
 
 function addTestCommands(program) {
 
@@ -99,7 +105,7 @@ function addTestCommands(program) {
             }
         })
 
-    program
+        program
         .command('simultest')
         .description("Simulate a verified test")
         .argument('<id>', 'The id of the test to simulate')
@@ -114,20 +120,70 @@ function addTestCommands(program) {
             const results = [];
 
             for (const question of test.questions) {
-                const answer = await inquirer.prompt([{
-                    type: 'input',
-                    name: 'userAnswer',
-                    message: question.question
-                }]);
+                let answer;
+                if (question instanceof MultipleChoiceQuestion) {
+                    answer = await inquirer.prompt([{
+                        type: 'checkbox',
+                        name: 'userAnswer',
+                        message: question.question,
+                        choices: question.answerSet
+                    }]);
+                } else if (question instanceof TrueFalseQuestion) {
+                    answer = await inquirer.prompt([{
+                        type: 'confirm',
+                        name: 'userAnswer',
+                        message: question.question
+                    }]);
+                } else if (question instanceof NumericQuestion) {
+                    answer = await inquirer.prompt([{
+                        type: 'number',
+                        name: 'userAnswer',
+                        message: question.question
+                    }]);
+                } else if (question instanceof ShortAnswerQuestion) {
+                    answer = await inquirer.prompt([{
+                        type: 'input',
+                        name: 'userAnswer',
+                        message: question.question
+                    }]);
+                } else if (question instanceof BlankWordQuestion) {
+                    answer = await inquirer.prompt([{
+                        type: 'input',
+                        name: 'userAnswer',
+                        message: `${question.question}\n${question.textPart1} .... ${question.textPart2}`
+                    }]);
+                } else {
+                    console.log(`Unknown question type for question: ${question.question}`);
+                    continue;
+                }
 
+                let isCorrect = false;
+                if (question instanceof TrueFalseQuestion) {
+                    isCorrect = answer.userAnswer === question.answer;
+                }
+                if (question instanceof MultipleChoiceQuestion) {
+                    isCorrect = question.correctAnswers.length === answer.userAnswer.length &&
+                        question.correctAnswers.every((val, index) => val === answer.userAnswer[index]);
+                }
+                if (question instanceof NumericQuestion) {
+                    isCorrect = question.answer === answer.userAnswer;
+                }
+                if (question instanceof BlankWordQuestion) {
+                    isCorrect = question.blankWord === answer.userAnswer;
+                }
+                if (question instanceof ShortAnswerQuestion) {
+                    isCorrect = question.answer && answer.userAnswer.toString().toLowerCase() === question.answer.toString().toLowerCase();
+                }
                 results.push({
                     question: question.question,
-                    userAnswer: answer.userAnswer,
-                    correctAnswer: question.answer,
-                    isCorrect: answer.userAnswer === question.answer
+                    userAnswer: question instanceof MultipleChoiceQuestion ? answer.userAnswer.join(', ') : answer.userAnswer,
+                    correctAnswer: question instanceof MultipleChoiceQuestion ? question.correctAnswers.join(', ') :
+                                   question instanceof BlankWordQuestion ? question.blankWord :
+                                   question.answer,
+                    isCorrect: isCorrect
                 });
 
-                if (answer.userAnswer === question.answer) {
+                if (isCorrect) {
                     score++;
                 }
             }
