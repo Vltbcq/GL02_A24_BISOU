@@ -132,9 +132,12 @@ function addTestCommands(program) {
                 }
             }
 
+            const terminalWidth = process.stdout.columns;
+            const colWidth = Math.floor(terminalWidth / 4) - 1;
+
             const table = new Table({
                 head: ['Result', 'Questions', 'User Answers', 'Correct Answers'],
-                colWidths: [20, 50, 50, 50]
+                colWidths: [colWidth, colWidth, colWidth, colWidth]
             });
 
             results.forEach(result => {
