@@ -3,11 +3,12 @@ const {prettyTestList} = require('./pretty-printing-tools/TestPrinter');
 const QuestionCache = require('../controller/utils/QuestionCache');
 const TestCache = require('../controller/utils/TestCache');
 const inquirer = require('inquirer').default;
-const NumericQuestion = require('../model/base-types/implementations/NumericQuestion')
-const BlankWordQuestion = require('../model/base-types/implementations/BlankWordQuestion')
-const MultipleChoiceQuestion = require('../model/base-types/implementations/MultipleChoiceQuestion')
-const TrueFalseQuestion = require('../model/base-types/implementations/TrueFalseQuestion')
-const ShortAnswerQuestion = require('../model/base-types/implementations/ShortAnswerQuestion')
+const NumericQuestion = require('../model/base-types/implementations/NumericQuestion');
+const BlankWordQuestion = require('../model/base-types/implementations/BlankWordQuestion');
+const MultipleChoiceQuestion = require('../model/base-types/implementations/MultipleChoiceQuestion');
+const TrueFalseQuestion = require('../model/base-types/implementations/TrueFalseQuestion');
+const ShortAnswerQuestion = require('../model/base-types/implementations/ShortAnswerQuestion');
+const logger = require("../security/Logger");
 
 function addTestCommands(program) {
 
@@ -90,7 +91,7 @@ function addTestCommands(program) {
             .argument('<id>', 'ID of the test you want to get the test profile')
             .action((id) => {
                 try{
-                    let tests = this.readAll()
+                    let tests = controller.readAll()
                     controller.testProfile(id, tests);
                     logger.info("Visualization of test profile has been created")
                 } catch(error){

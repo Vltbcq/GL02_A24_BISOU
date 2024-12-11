@@ -132,7 +132,7 @@ class TestController {
    * @param {Test[]} tests - Liste contenant le test recherché
    */
   testProfile(testId, tests){
-   let test = tests.find(test => test._id === testId);
+   let test = tests.find(test => test._id === parseInt(testId));
    if (test === undefined){
       throw new Error("Can't find the test, please make sure that you entered the good ID");
    }
@@ -202,7 +202,7 @@ class TestController {
  * @returns {number[]} - Statistiques en proportion du test à comparer
  */
 testToCompareStats(testId, tests){
-   let testToCompare = tests.find(test => test._id === testId);
+   let testToCompare = tests.find(test => test._id === parseInt(testId));
    console.log(testToCompare)
    if (testToCompare === undefined){
       throw new Error("Can't find the test, please make sure that you entered the good ID")
