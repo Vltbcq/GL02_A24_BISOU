@@ -8,17 +8,17 @@ class VCardController{
      * Crée une nouvelle vCard
      * @param {string} firstname - Prénom
      * @param {string} lastname - Nom
-     * @param {string} mail - Adresse mail
      * @param {string} phone - Numéro de téléphone
+     * @param {string} mail - Adresse mail
      */
-    createVCard(firstname, lastname, mail, phone){
+    createVCard(firstname, lastname, phone, mail){
         let id = this.readLastID() + 1;
         let vCard = vCardsJS();
 
         vCard.firstName = firstname;
         vCard.lastName = lastname;
-        vCard.email = mail;
         vCard.workPhone = phone;
+        vCard.email = mail;
 
         vCard.saveToFile(`${vcard_path}/${id}.vcf`);
     }
@@ -53,8 +53,8 @@ class VCardController{
 
         vCard.firstName = tab[0];
         vCard.lastName = tab[1];
-        vCard.email = tab[2];
-        vCard.workPhone = tab[3];
+        vCard.workPhone = tab[2];
+        vCard.email = tab[3];
 
         vCard.saveToFile(`${vcard_path}/${id}.vcf`);
     }
