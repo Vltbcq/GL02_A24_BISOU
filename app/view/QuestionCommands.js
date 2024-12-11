@@ -42,7 +42,7 @@ function addQuestionCommands(program) {
         .action(function (id, editedText, options) {
 
             try{
-                let question = QuestionCache.instance.getQuestion(id);
+                let question = QuestionCache.instance.getQuestion(parseInt(id));
 
                 if (question instanceof BlankWordQuestion) {
                     if (options.start){
@@ -78,7 +78,7 @@ function addQuestionCommands(program) {
         .action(function (id, editedText) {
 
             try{
-                let question = QuestionCache.instance.getQuestion(id);
+                let question = QuestionCache.instance.getQuestion(parseInt(id));
 
                 if (question instanceof BlankWordQuestion) {
                     controller.editBlankWordAnswer(question, editedText);
@@ -129,7 +129,7 @@ function addQuestionCommands(program) {
         .description("Delete a question")
         .action(function (id) {
             try{
-                let questionToDelete = QuestionCache.instance.getQuestion(id);
+                let questionToDelete = QuestionCache.instance.getQuestion(parseInt(id));
                 controller.deleteQuestion(questionToDelete);
             } catch(error){
                 console.error(error.message);
