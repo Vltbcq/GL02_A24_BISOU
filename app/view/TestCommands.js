@@ -10,7 +10,6 @@ const TrueFalseQuestion = require('../model/base-types/implementations/TrueFalse
 const NumericQuestion = require('../model/base-types/implementations/NumericQuestion');
 const ShortAnswerQuestion = require('../model/base-types/implementations/ShortAnswerQuestion');
 const BlankWordQuestion = require('../model/base-types/implementations/BlankWordQuestion');
-
 const logger = require("../security/Logger");
 
 function addTestCommands(program) {
@@ -39,7 +38,8 @@ function addTestCommands(program) {
             let tests = controller.readAll();
             console.log(prettyTestList(tests));
         })
-        program
+
+    program
         .command('rmtest')
         .description("Delete a test")
         .argument('<id>', 'The id of the test to delete')
@@ -72,7 +72,6 @@ function addTestCommands(program) {
                     choices: ['Add', 'Remove']
                 }
             ]);
-
             const question = QuestionCache.instance.getQuestion(parseInt(questionId));
             if (!question) {
                 console.log(`Question with id ${questionId} not found.`);

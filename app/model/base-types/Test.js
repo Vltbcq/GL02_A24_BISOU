@@ -60,6 +60,9 @@ class Test {
         if (!this.containsQuestion(question)) {
             this._questions.push(question);
         }
+        else {
+            throw new Error("Question already in test");
+        }
     }
 
     /**
