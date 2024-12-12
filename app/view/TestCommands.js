@@ -97,6 +97,10 @@ function addTestCommands(program) {
                 console.log(`Test with id ${id} not found.`);
                 return;
             }
+            if (!test.isValid) {
+                console.log(`Test with id ${id} is not valid.`);
+                return;
+            }
 
             let score = 0;
             const results = [];
