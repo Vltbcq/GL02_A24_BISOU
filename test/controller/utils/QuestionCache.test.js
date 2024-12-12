@@ -23,7 +23,7 @@ test("Ajout d'un mauvais objet au cache des questions", () => {
 
 test("Recherche d'une question dans le cache", () => {
     let testQuestion = new NumericQuestion("question?", 3);
-    let id_question = testQuestion._id;
     QuestionCache.instance.addQuestion(testQuestion);
+    let id_question = testQuestion._id;
     expect(QuestionCache.instance.getQuestion(id_question).equal(new NumericQuestion("question?", 3))).toBeTruthy();
 })

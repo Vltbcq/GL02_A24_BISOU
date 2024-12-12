@@ -55,6 +55,7 @@ class QuestionCache {
         if (!(question instanceof Question)) {
             throw new Error("Something that wasn't a question was passed to the question cache");
         }
+        question._id = this.nextId();
         logger.info(`Adding question (${JSON.stringify(question)}) to the question list`);
         this._questions.push(question);
         this.#saveState()
@@ -94,14 +95,28 @@ class QuestionCache {
      * Suppression d'une question du cache
      * @param question {Question} - Question
      */
-  removeQuestion(question) {
-    if (!(question instanceof Question)) {
-      throw new Error("Invalid question object");
-    }
-    logger.info(`Deleting question of id : ${question.id}`)
-    this._questions = this._questions.filter((q) => q.id !== question.id);
-    this.#saveState();
+    removeQuestion(question) {
+        if (!(question instanceof Question)) {
+        throw new Error("Invalid question object");
+        }
+        logger.info(`Deleting question of id : ${question.id}`)
+        this._questions = this._questions.filter((q) => q.id !== question.id);
+        this.#saveState();
   }
+
+    /**
+     * ID suivant le dernier ID du cache
+     * @returns {number} id - retourne l'id de la prochaine question qui sera dans le cache
+     */
+    nextId(){
+        let questions = this._questions
+        if (questions.length > 0) {
+            let maxId = Math.max(...questions.map(q => q.id));
+            return (maxId + 1);
+        } else {
+            return (0);
+        }
+    }
 }
 
 module.exports = QuestionCache;
