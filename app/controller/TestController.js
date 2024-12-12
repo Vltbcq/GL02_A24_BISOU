@@ -133,12 +133,16 @@ class TestController {
    */
   testProfile(testId, tests){
 <<<<<<< HEAD
+<<<<<<< HEAD
    let test = tests.find(test => test._id === parseInt(testId));
    if (test === undefined){
       throw new Error("Can't find the test, please make sure that you entered the good ID");
    }
 =======
    let test = tests.find(test => test._id === testId);
+=======
+   let test = tests.find(test => test._id === parseInt(testId));
+>>>>>>> a1be992 (qlq correctifs, ça m'a l'air bon la)
    if (test === undefined){
       throw new Error("Can't find the test, please make sure that you entered the good ID");
    }
@@ -214,12 +218,16 @@ class TestController {
  */
 testToCompareStats(testId, tests){
 <<<<<<< HEAD
+<<<<<<< HEAD
    let testToCompare = tests.find(test => test._id === parseInt(testId));
    if (testToCompare === undefined){
       throw new Error("Can't find the test, please make sure that you entered the good ID")
    }
 =======
    let testToCompare = tests.find(test => test._id === testId);
+=======
+   let testToCompare = tests.find(test => test._id === parseInt(testId));
+>>>>>>> a1be992 (qlq correctifs, ça m'a l'air bon la)
    console.log(testToCompare)
    if (testToCompare === undefined){
       throw new Error("Can't find the test, please make sure that you entered the good ID")

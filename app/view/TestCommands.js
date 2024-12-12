@@ -140,7 +140,7 @@ function addTestCommands(program) {
             .action((id) => {
                 try{
                     let tests = controller.readAll()
-                    controller.testProfile(id, tests);
+                    controller.testProfile(parseInt(id), tests);
                     logger.info("Visualization of test profile has been created")
                 } catch(error){
                     console.error(error.message);
@@ -155,7 +155,8 @@ function addTestCommands(program) {
             .action((id) => {
                 try{
                     let tests = controller.readAll();
-                    controller.compare(id, tests);
+                    let valid_tests = tests.filter(test => test.isValid());
+                    controller.compare(parseInt(id), valid_tests);
                     logger.info("Visualization of test comparisons has been created")
                 } catch(error){
                     console.error(error.message);
