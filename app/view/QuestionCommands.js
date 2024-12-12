@@ -203,19 +203,34 @@ function addQuestionCommands(program) {
             console.log(`Questions added to test ${answers.testId}`);
         });
 
-    program
-        .command('rmquestion')
-        .argument('<id>', 'The question ID')
-        .description("Delete a question")
-        .action(function (id) {
-            try{
-                let question = QuestionCache.instance.getQuestion(parseInt(id));
-                controller.deleteQuestion(question);
-                QuestionCache.instance.saveEdition();
-            } catch(error){
-                console.error(error.message);
+   program
+      .command('rmquestion')
+      .argument('<id>', 'The question ID')
+      .description("Delete a question")
+      .action(async function (id) {
+         try {
+            const { confirm } = await inquirer.prompt([
+               {
+                  type: 'confirm',
+                  name: 'confirm',
+                  message: 'Are you sure you want to delete this question?',
+               },
+            ]);
+
+            if (confirm) {
+               let question = QuestionCache.instance.getQuestion(parseInt(id));
+               controller.deleteQuestion(question);
+               QuestionCache.instance.saveEdition();
+               console.log('Question deleted successfully.');
+               logger.info(`Question with ID ${id} has been deleted.`);
+            } else {
+               console.log('Question deletion canceled.');
+               logger.info('Question deletion canceled.');
             }
-        })
+         } catch (error) {
+            console.error(error.message);
+         }
+      })
 }
 
 module.exports = addQuestionCommands;

@@ -43,11 +43,22 @@ function addTestCommands(program) {
         .command('rmtest')
         .description("Delete a test")
         .argument('<id>', 'The id of the test to delete')
-        .action((id) => {
+        .action(async (id) => {
             const test = TestCache.instance.getTestById(parseInt(id));
             if (test) {
-                controller.deleteTest(test);
-                console.log(`Test with id ${id} deleted.`);
+                const { confirm } = await inquirer.prompt([{
+                    type: 'confirm',
+                    name: 'confirm',
+                    message: `Are you sure you want to delete the test with id ${id}?`,
+                }]);
+                if (confirm) {
+                    controller.deleteTest(test);
+                    console.log(`Test with id ${id} deleted.`);
+                    logger.info(`Test with id ${id} deleted.`);
+                } else {
+                    console.log(`Deletion of test with id ${id} canceled.`);
+                    logger.info(`Deletion of test with id ${id} canceled.`);
+                }
             } else {
                 console.log(`Test with id ${id} not found.`);
             }

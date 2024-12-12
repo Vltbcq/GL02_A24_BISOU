@@ -1,5 +1,6 @@
 const VCardController = require("../controller/VCardController");
 const logger = require("../security/Logger");
+const inquirer = require('inquirer').default;
 
 function addVCardCommands(program) {
 
@@ -54,15 +55,30 @@ function addVCardCommands(program) {
     program
         .command('rmvcard')
         .description('Delete a vCard that already exists')
-        .argument('<id>','ID of the vCard you want to delete')
-        .action((id) => {
-            try{
-                controller.deleteVCard(id);
-                logger.info(`${id}.vcf has been deleted`);
-            } catch(error){
+        .argument('<id>', 'ID of the vCard you want to delete')
+        .action(async (id) => {
+            try {
+                const answer = await inquirer.prompt([
+                    {
+                        type: 'confirm',
+                        name: 'confirmDelete',
+                        message: `Are you sure you want to delete the vCard with ID ${id}?`,
+                        default: false
+                    }
+                ]);
+
+                if (answer.confirmDelete) {
+                    controller.deleteVCard(id);
+                    console.log(`The vCard with ID ${id} has been deleted`);
+                    logger.info(`${id}.vcf has been deleted`);
+                } else {
+                    console.log(`Deletion of ${id}.vcf has been canceled`);
+                    logger.info(`Deletion of ${id}.vcf has been canceled`);
+                }
+            } catch (error) {
                 console.error(error.message);
             }
-        })
+        });
 }
 
 module.exports = addVCardCommands;
