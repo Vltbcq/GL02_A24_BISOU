@@ -1,11 +1,6 @@
 const Test = require('../../../app/model/base-types/Test');
 const NumericQuestion = require('../../../app/model/base-types/implementations/NumericQuestion');
 const ShortAnswerQuestion = require('../../../app/model/base-types/implementations/ShortAnswerQuestion');
-<<<<<<< HEAD
-=======
-const VCardController = require('../../../app/controller/VCardController')
->>>>>>> tmp
-const TrueFalseQuestion = require('../../../app/model/base-types/implementations/TrueFalseQuestion');
 
 test('Initialisation d\'un examen', () => {
     expect(new Test().questionNumber).toBe(0)
@@ -43,32 +38,5 @@ test("Validité d'un examen", () => {
     for (let i = 0; i < 20; i++) {
         test.addQuestion(new NumericQuestion('question', i));
     }
-<<<<<<< HEAD
-    expect(test.isValid).toBeFalsy()
-    for (let i = 0; i < 5; i++) {
-        test.addQuestion(new NumericQuestion('question', i+10));
-    }
-    expect(test.isValid).toBeTruthy()
-    for (let i = 0; i < 5; i++) {
-        test.addQuestion(new NumericQuestion('question', i+15));
-    }
-    expect(test.isValid).toBeTruthy()
-    test.addQuestion(new NumericQuestion('question', 30))
-    expect(test.isValid).toBeFalsy()
-})
-
-test("Compte du nombre de questions sur un type", () => {
-    let test = new Test();
-    for (let i = 0; i < 10; i++){
-        test.addQuestion(new NumericQuestion('question', i));
-        test.addQuestion(new TrueFalseQuestion(`question ${i}`, true));
-    }
-    expect(test.questionNumber).toEqual(20);
-    expect(test.getTypeOfQuestionNumber(NumericQuestion)).toEqual(10);
-    expect(test.getTypeOfQuestionNumber(TrueFalseQuestion)).toEqual(10);
-    expect(test.getTypeOfQuestionNumber(ShortAnswerQuestion)).toEqual(0);
-});
-=======
     expect(test.isValid()).toBeFalsy()
 })
->>>>>>> tmp

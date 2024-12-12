@@ -132,25 +132,13 @@ class TestController {
    * @param {Test[]} tests - Liste contenant le test recherché
    */
   testProfile(testId, tests){
-<<<<<<< HEAD
-<<<<<<< HEAD
-   let test = tests.find(test => test._id === parseInt(testId));
-   if (test === undefined){
-      throw new Error("Can't find the test, please make sure that you entered the good ID");
-   }
-=======
    let test = tests.find(test => test._id === testId);
-=======
-   let test = tests.find(test => test._id === parseInt(testId));
->>>>>>> a1be992 (qlq correctifs, ça m'a l'air bon la)
    if (test === undefined){
       throw new Error("Can't find the test, please make sure that you entered the good ID");
    }
    if (!(test.isValid())){
       throw new Error("This test isn't valid");
    }
-   
->>>>>>> tmp
    let profile = this.countStats(test);
 
    //Visualisation
