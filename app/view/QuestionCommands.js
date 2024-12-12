@@ -131,11 +131,13 @@ function addQuestionCommands(program) {
 
     program
         .command('rmquestion')
+        .argument('<id>', 'The question ID')
         .description("Delete a question")
         .action(function (id) {
             try{
-                let questionToDelete = QuestionCache.instance.getQuestion(parseInt(id));
-                controller.deleteQuestion(questionToDelete);
+                let question = QuestionCache.instance.getQuestion(parseInt(id));
+                controller.deleteQuestion(question);
+                QuestionCache.instance.saveEdition();
             } catch(error){
                 console.error(error.message);
             }
