@@ -28,3 +28,8 @@ Pour lancer les tests, quelques commandes sont disponibles dans la configuration
 - ``npm test`` permet de tester l'entièreté du projet
 - ``npm run test:model`` permet de tester uniquement la couche model
 - ``npm run test:controller`` permet de tester uniquement la couche controller
+
+## données de test
+
+Vous avez à votre disposition des questions et des tests prédéfinis pour vous aidez à réaliser des tests dans les fichiers testing_questions.json et testing_tests.json
+--> copier le contenu dans les fichiers quesitons.json et tests.json du dossier data

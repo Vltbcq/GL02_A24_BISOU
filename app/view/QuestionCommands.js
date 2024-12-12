@@ -41,9 +41,9 @@ function addQuestionCommands(program) {
         .command("mkquestion")
         .description("Create a new question")
         .argument('<type>', `The type of the question, choose among ${shortAnswerString}, ${trueFalseString}, ${multipleChoiceString}, ${blankWordString} and ${numericString}`)
-        .argument('<question>', `The wording of the question, for a ${blankWordString} question insert [gap] at the position of the missing word`)
+        .argument('<question>', "The wording of the question, for a ${blankWordString} question, write the frase to complete, insert [gap] at the position of the missing word : 'This is a [gap] question' ")
         .argument('<answer>', `The correct answer of the question, please notice the following instructions :\nUse yes/y or no/n if it is a ${trueFalseString} question\nFor a ${multipleChoiceString} question separate the answer set and the correct answer set with a colon 'possibleAnswers:correctAnswers', and separate the answers with a comma ','`)
-        .action((type, question, answer) => {
+        .action(async (type, question, answer) => {
             logger.info(`Execution of mkquestion command with the following parameters : [type : ${type}; question : ${question}, answer : ${answer}`);
             if (type === numericString) {
                 controller.createNumeric(question, parseInt(answer))
@@ -63,8 +63,15 @@ function addQuestionCommands(program) {
 
                 controller.createMultipleChoice(question, answerSetList, correctAnswerSetList);
             } else if (type === blankWordString) {
+                const { instruction } = await inquirer.prompt([
+                    {
+                        type: 'input',
+                        name: 'instruction',
+                        message: 'Please provide instructions for the question:',
+                    },
+                ]);
                 const questionTexts = question.split("[gap]").map(item => item.trim());
-                controller.createBlankWord(questionTexts[0], questionTexts[1], answer);
+                controller.createBlankWord(instruction,questionTexts[0], questionTexts[1], answer);
             }
             console.log("A new question has been created");
         });
