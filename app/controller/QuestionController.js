@@ -4,7 +4,6 @@ const MultipleChoiceQuestion = require('../model/base-types/implementations/Mult
 const NumericQuestion = require('../model/base-types/implementations/NumericQuestion')
 const ShortAnswerQuestion = require('../model/base-types/implementations/ShortAnswerQuestion')
 const TrueFalseQuestion = require("../model/base-types/implementations/TrueFalseQuestion");
-const Question = require('../model/base-types/Question')
 
 /**
  * Contrôleur des questions, gère les opérations portant sur celle-ci
@@ -27,11 +26,12 @@ class QuestionController {
      * Créée une nouvelle question à réponses multiples
      * @param question {string} - Enoncé de la question
      * @param answerSet {string[]} - Ensemble des réponses proposées
-     * @param correctAnswers {number[]} - Liste des réponses valides
+     * @param correctAnswers {string[]} - Liste des réponses valides
      * @return {MultipleChoiceQuestion} - Question créée
      */
     createMultipleChoice(question, answerSet, correctAnswers) {
-        let newQuestion = new MultipleChoiceQuestion(question, answerSet, correctAnswers);
+        const correctAnswersIndexes = correctAnswers.map(answer => answerSet.indexOf(answer));
+        let newQuestion = new MultipleChoiceQuestion(question, answerSet, correctAnswersIndexes);
         this.#addToCache(newQuestion);
         return newQuestion;
     }
@@ -74,7 +74,7 @@ class QuestionController {
 
     /**
      * Modifie l'énoncé d'une question
-     * @param {Question} question
+     * @param {Question} questionToEdit
      * @param {string} editedText
      */
     editQuestion(questionToEdit, editedText){
@@ -112,8 +112,7 @@ class QuestionController {
      * @param {string} editedText
      */
     editMultipleChoiceAnswerSet(multipleChoiceQuestion, editedText){
-        const answersetList = editedText.split(',').map(item => item.trim());
-        multipleChoiceQuestion.answerSet = answersetList;
+        multipleChoiceQuestion.answerSet = editedText.split(',').map(item => item.trim());
         QuestionCache.instance.saveEdition();
     }
 
