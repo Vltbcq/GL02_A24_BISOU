@@ -1,5 +1,4 @@
 const TestController = require('../controller/TestController');
-const Test = require('../model/base-types/Test');
 const {prettyTestList} = require('./pretty-printing-tools/TestPrinter');
 const QuestionCache = require('../controller/utils/QuestionCache');
 const TestCache = require('../controller/utils/TestCache');
@@ -73,7 +72,6 @@ function addTestCommands(program) {
                 console.log(`Question with id ${questionId} not found.`);
                 return;
             }
-
             if (action === 'Add') {
                 controller.addQuestionToTest(test, question);
                 console.log(`Question with id ${questionId} added to test ${id}.`);
@@ -99,5 +97,35 @@ function addTestCommands(program) {
                 console.error(error.message);
             }
         })
+
+        program
+            .command('profile')
+            .description('Create a visualization of test profile')
+            .argument('<id>', 'ID of the test you want to get the test profile')
+            .action((id) => {
+                try{
+                    let tests = controller.readAll()
+                    controller.testProfile(parseInt(id), tests);
+                    logger.info("Visualization of test profile has been created")
+                } catch(error){
+                    logger.error(error.message);
+                }
+                
+            })
+
+        program
+            .command('comparison')
+            .description('Create a visualization of test comparisons')
+            .argument('<id>','ID of the test you want to compare')
+            .action((id) => {
+                try{
+                    let tests = controller.readAll();
+                    let valid_tests = tests.filter(test => test.isValid());
+                    controller.compare(parseInt(id), valid_tests);
+                    logger.info("Visualization of test comparisons has been created")
+                } catch(error){
+                    logger.error(error.message);
+                }
+            })
 }
 module.exports = addTestCommands;
