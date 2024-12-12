@@ -12,7 +12,6 @@ const ShortAnswerQuestion = require('../model/base-types/implementations/ShortAn
 const BlankWordQuestion = require('../model/base-types/implementations/BlankWordQuestion');
 const logger = require("../security/Logger");
 
-
 function addTestCommands(program) {
 
     const controller = new TestController();
@@ -53,7 +52,6 @@ function addTestCommands(program) {
                 console.log(`Test with id ${id} not found.`);
             }
         })
-
     program
         .command('editest')
         .description("Edit a test")
@@ -87,8 +85,55 @@ function addTestCommands(program) {
                 console.log(`Question with id ${questionId} removed from test ${id}.`);
             }
         })
- 
-  program
+            
+    program
+        .command('linkvcard')
+        .description("Link a vcard to a test")
+        .argument('<vcard_id>', 'vCard ID')
+        .argument('<test_id>', 'Test ID')
+        .action((vcard_id, test_id) => {
+            try{
+                logger.info(`Execution of linkvcard.`);
+                const test = TestCache.instance.getTestById(parseInt(test_id));
+                test.addVCardToTest(vcard_id);
+                console.log(`${vcard_id}.vcf get linked to test ${test_id}.`);
+                TestCache._instance.updateTest(test);
+            } catch(error){
+                console.error(error.message);
+            }
+        })
+
+        program
+            .command('profile')
+            .description('Create a visualization of test profile')
+            .argument('<id>', 'ID of the test you want to get the test profile')
+            .action((id) => {
+                try{
+                    let tests = controller.readAll()
+                    controller.testProfile(parseInt(id), tests);
+                    logger.info("Visualization of test profile has been created")
+                } catch(error){
+                    logger.error(error.message);
+                }
+                
+            })
+
+        program
+            .command('comparison')
+            .description('Create a visualization of test comparisons')
+            .argument('<id>','ID of the test you want to compare')
+            .action((id) => {
+                try{
+                    let tests = controller.readAll();
+                    let valid_tests = tests.filter(test => test.isValid());
+                    controller.compare(parseInt(id), valid_tests);
+                    logger.info("Visualization of test comparisons has been created")
+                } catch(error){
+                    logger.error(error.message);
+                }
+            })
+        
+    program
         .command('simultest')
         .description("Simulate a verified test")
         .argument('<id>', 'The id of the test to simulate')
@@ -96,6 +141,10 @@ function addTestCommands(program) {
             const test = controller.readAll().find(t => t.id === parseInt(id));
             if (!test) {
                 console.log(`Test with id ${id} not found.`);
+                return;
+            }
+            if (!test.isValid) {
+                console.log(`Test with id ${id} is not valid.`);
                 return;
             }
 
@@ -191,59 +240,12 @@ function addTestCommands(program) {
             console.log(table.toString());
             figlet(`Score : ${score}/${test.questions.length}`, (err, data) => {
                 if (err) {
-                    console.log('Something went wrong...');
+                    logger.error('Something went wrong...', err);
                     console.dir(err);
                     return;
                 }
                 console.log(data);
             });
         });
-                   
-    program
-        .command('linkvcard')
-        .description("Link a vcard to a test")
-        .argument('<vcard_id>', 'vCard ID')
-        .argument('<test_id>', 'Test ID')
-        .action((vcard_id, test_id) => {
-            try{
-                logger.info(`Execution of linkvcard.`);
-                const test = TestCache.instance.getTestById(parseInt(test_id));
-                test.addVCardToTest(vcard_id);
-                console.log(`${vcard_id}.vcf get linked to test ${test_id}.`);
-                TestCache._instance.updateTest(test);
-            } catch(error){
-                console.error(error.message);
-            }
-        })
-
-        program
-            .command('profile')
-            .description('Create a visualization of test profile')
-            .argument('<id>', 'ID of the test you want to get the test profile')
-            .action((id) => {
-                try{
-                    let tests = controller.readAll()
-                    controller.testProfile(parseInt(id), tests);
-                    logger.info("Visualization of test profile has been created")
-                } catch(error){
-                    logger.error(error.message);
-                }
-                
-            })
-
-        program
-            .command('comparison')
-            .description('Create a visualization of test comparisons')
-            .argument('<id>','ID of the test you want to compare')
-            .action((id) => {
-                try{
-                    let tests = controller.readAll();
-                    let valid_tests = tests.filter(test => test.isValid());
-                    controller.compare(parseInt(id), valid_tests);
-                    logger.info("Visualization of test comparisons has been created")
-                } catch(error){
-                    logger.error(error.message);
-                }
-            })
 }
 module.exports = addTestCommands;
