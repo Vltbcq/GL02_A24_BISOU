@@ -133,14 +133,6 @@ class VCardController{
             return fileName === idName;
         });
     }
-
-    addVCardToTest(vcard_id, test){
-        if (this.isCorrectId(id)){
-            test._vCard = vcard_id;
-        } else{
-            throw new Error("Wrong vCard ID")
-        }
-    }
 }
 
 module.exports = VCardController;
