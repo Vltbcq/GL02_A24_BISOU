@@ -1,7 +1,7 @@
 # GL02_A24_BISOU
 
-Pour installer l'applicatif, se positionner à la racine du répertoire du projet et exécuter la commande `npm install -g`
-Une fois cela fait l'application sera disponible dans le terminal de façon globale sur la machine via la commande ``bisou``
+Pour installer l'applicatif, se positionner à la racine du répertoire du projet et exécuter la commande `npm install`
+Une fois cela fait l'application sera disponible dans le terminal de façon locale dans le répertoire du projet via la commande ``bisou``
 
 ## Lancement des tests unitaires
 Les tests unitaires sont faits avec la librairie [Jest](https://jestjs.io/fr/).
