@@ -3,8 +3,8 @@
 ## Installation & lancement
 
 Pour installer l'applicatif, se positionner à la racine du répertoire du projet et exécuter la commande `npm install`
-Une fois cela fait l'application sera disponible dans le terminal de façon locale dans le répertoire du projet via la commande ``bisou``
-ou directement en se plaçant à l'intérieur du dossier et en éxécutant npm run launch pour accéder à la liste des commandes, on execute ensutie npm run launch suivi de la commande voulu
+Une fois cela fait l'application sera disponible dans le terminal de façon locale dans le répertoire du projet via la commande ``npm exec bisou``
+ou directement en se plaçant à l'intérieur du dossier et en éxécutant `npm run launch` pour accéder à la liste des commandes, on execute ensutie npm run launch suivi de la commande voulu
 
 ## Architecture du projet
 
