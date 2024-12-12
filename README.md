@@ -1,5 +1,9 @@
 # GL02_A24_BISOU
 
+## Installation & lancement
+
+Pour installer l'applicatif, se positionner via le terminal dans le dossier racine et effectuer la commande ``npm install``.
+
 Pour lancer l'applicatif, se positionner via le terminal n'importe où dans le dossier du projet et exécuter la commande ``npm run launch`` (on peut ajouter derrière cette commande celle devant être exécutée par l'applicatif)
 
 ## Architecture du projet
