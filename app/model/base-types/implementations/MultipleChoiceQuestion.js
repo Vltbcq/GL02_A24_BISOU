@@ -35,15 +35,15 @@ class MultipleChoiceQuestion extends Question {
      */
     get correctAnswers() {
         let ret = [];
-        for (const correctAnswer in this._correctAnswers) {
-            ret.push(this.answerSet[correctAnswer]);
+        for (const correctAnswer of this._correctAnswers) {
+            ret.push(this.answerSet.at(correctAnswer));
         }
         return ret;
     }
 
     /**
      * Modifie l'ensemble des réponses possibles
-     * @param {string[]} answerSet - Ensemble des réponses possibles
+     * @param {string[]} editedAnswerSet - Ensemble des réponses possibles
      */
     set answerSet(editedAnswerSet){
         this._answerSet = editedAnswerSet;
@@ -51,7 +51,7 @@ class MultipleChoiceQuestion extends Question {
 
     /**
      * Modifie l'index des réponses valides
-     * @param {number[]} correctAnswers - Index des réponses valide
+     * @param {number[]} editedCorrectAnswers - Index des réponses valide
      */
     set correctAnswers(editedCorrectAnswers){
         this._correctAnswers = editedCorrectAnswers;

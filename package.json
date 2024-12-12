@@ -1,7 +1,13 @@
 {
+  "name": "bisou-sru",
+  "main": "./app/view/Main.js",
   "devDependencies": {
     "@types/jest": "^29.5.14",
     "jest": "^29.7.0"
+  },
+  "version": "1.1",
+  "bin": {
+    "bisou": "./app/view/Main.js"
   },
   "scripts": {
     "test:model": "jest --testPathPattern='/test/model'",
