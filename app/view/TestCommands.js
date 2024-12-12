@@ -72,14 +72,6 @@ function addTestCommands(program) {
                     choices: ['Add', 'Remove']
                 }
             ]);
-            const { action } = await inquirer.prompt([
-                {
-                    type: 'list',
-                    name: 'action',
-                    message: 'Do you want to add or remove the question?',
-                    choices: ['Add', 'Remove']
-                }
-            ]);
 
             const question = QuestionCache.instance.getQuestion(parseInt(questionId));
             if (!question) {
