@@ -66,6 +66,7 @@ function addQuestionCommands(program) {
                 const questionTexts = question.split("[gap]").map(item => item.trim());
                 controller.createBlankWord(questionTexts[0], questionTexts[1], answer);
             }
+            console.log("A new question has been created");
         });
 
     program
@@ -100,6 +101,7 @@ function addQuestionCommands(program) {
                 }
 
                 QuestionCache.instance.saveEdition();
+                console.log(`Question ${id} has been edited`);
             } catch (error) {
                 console.error(error.message);
             }
@@ -147,7 +149,7 @@ function addQuestionCommands(program) {
                 }
 
                 QuestionCache.instance.saveEdition();
-
+                console.log(`Question ${id} has been edited`);
             } catch(error){
                 console.error(error.message);
             }
