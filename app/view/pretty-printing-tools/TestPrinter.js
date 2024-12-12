@@ -9,7 +9,7 @@ function prettyTest(test) {
     testString = `Test : ${test.id}`;
     let questionString = "Questions :";
     for (const question of test.questions) {
-        questionString += `\n- ${question.question}`;
+        questionString += `\n- question : ${question.question} | id : ${question.id}`;
     }
     return `${testString}\n${questionString}`;
 }
