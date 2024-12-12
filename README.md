@@ -38,4 +38,5 @@ Vous avez à votre disposition des questions et des tests prédéfinis pour vous
 ## Écarts au cahier des charges
 
 **SPEC 2** : Il a été décidé que les examens n'auront pas de titre, on les considérera uniquement avec leur identifiant. (Donc pas d'erreur de titre déjà utilisé)
+
 **SPEC 6** : Pas de fonction de validation, l'examen est automatiquement mis en validation ou non en fonction des critères demandés.
