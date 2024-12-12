@@ -30,7 +30,12 @@ Pour lancer les tests, quelques commandes sont disponibles dans la configuration
 - ``npm run test:model`` permet de tester uniquement la couche model
 - ``npm run test:controller`` permet de tester uniquement la couche controller
 
-## données de test
+## Données de test
 
 Vous avez à votre disposition des questions et des tests prédéfinis pour vous aidez à réaliser des tests dans les fichiers testing_questions.json et testing_tests.json
 --> copier le contenu dans les fichiers questions.json et tests.json du dossier data
+
+## Écarts au cahier des charges
+
+**SPEC 2** : Il a été décidé que les examens n'auront pas de titre, on les considérera uniquement avec leur identifiant. (Donc pas d'erreur de titre déjà utilisé)
+**SPEC 6** : Pas de fonction de validation, l'examen est automatiquement mis en validation ou non en fonction des critères demandés.
