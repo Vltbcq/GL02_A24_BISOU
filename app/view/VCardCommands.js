@@ -31,19 +31,24 @@ function addVCardCommands(program) {
                 let tab = controller.tabvCard(id);
                 if (options.firstname){
                     controller.editFirstName(tab, options.firstname);
-                    logger.info(`You're updating the first name to ${options.firstname} on the vCard`)
+                    logger.info(`You're updating the first name to ${options.firstname} on the vCard`);
+                    console.log(`You're updating the first name to ${options.firstname} on the vCard`);
+
                 }
                 if (options.lastname){
                     controller.editLastName(tab, options.lastname);
-                    logger.info(`You're updating the first name to ${options.lastname} on the vCard`)
+                    logger.info(`You're updating the last name to ${options.lastname} on the vCard`);
+                    console.log(`You're updating the last name to ${options.lastname} on the vCard`);
                 }
                 if (options.phone){
                     controller.editPhone(tab, options.phone);
-                    logger.info(`You're updating the first name to ${options.phone} on the vCard`)
+                    logger.info(`You're updating the phone to ${options.phone} on the vCard`);
+                    console.log(`You're updating the phone to ${options.lastname} on the vCard`);
                 }
                 if (options.mail){
                     controller.editMail(tab, options.mail);
-                    logger.info(`You're updating the first name to ${options.mail} on the vCard`)
+                    logger.info(`You're updating the mail to ${options.mail} on the vCard`);
+                    console.log(`You're updating the mail to ${options.mail} on the vCard`);
                 }
                 controller.editvCard(id, tab);    
             } catch(error){

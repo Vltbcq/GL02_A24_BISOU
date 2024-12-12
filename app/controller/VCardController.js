@@ -21,6 +21,7 @@ class VCardController{
         vCard.email = mail;
 
         vCard.saveToFile(`${vcard_path}/${id}.vcf`);
+        console.log(`${id}.vcf has been created`);
     }
 
     /**

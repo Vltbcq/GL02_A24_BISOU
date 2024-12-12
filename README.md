@@ -2,9 +2,8 @@
 
 ## Installation & lancement
 
-Pour installer l'applicatif, se positionner via le terminal dans le dossier racine et effectuer la commande ``npm install``.
-
-Pour lancer l'applicatif, se positionner via le terminal n'importe où dans le dossier du projet et exécuter la commande ``npm run launch`` (on peut ajouter derrière cette commande celle devant être exécutée par l'applicatif)
+Pour installer l'applicatif, se positionner à la racine du répertoire du projet et exécuter la commande `npm install`
+Une fois cela fait l'application sera disponible dans le terminal de façon locale dans le répertoire du projet via la commande ``bisou``
 
 ## Architecture du projet
 
