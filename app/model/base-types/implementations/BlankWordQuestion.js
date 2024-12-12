@@ -6,12 +6,13 @@ const Question = require('../Question');
 class BlankWordQuestion extends Question {
     /**
      * Instancie une question à texte à trou
+     * @param question {string} - indication pour compléter
      * @param textPart1 {string} - Première partie du texte
      * @param textPart2 {string} - Deuxième partie du texte
      * @param blankWord {string} - Mot manquant (réponse)
      */
-    constructor(textPart1, textPart2, blankWord) {
-        super(`${textPart1} ..... ${textPart2}`);
+    constructor(question, textPart1, textPart2, blankWord) {
+        super(question);
         this._blankWord = blankWord;
         this._textPart1 = textPart1;
         this._textPart2 = textPart2;

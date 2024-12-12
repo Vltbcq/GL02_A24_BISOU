@@ -13,5 +13,5 @@ test('Inégalité question mot manquant', () => {
 })
 
 test('Lecture du mot manquant dans une question à mot manquant', () => {
-    expect(new BlankWordQuestion('début', 'fin', 'mot manquant').blankWord).toBe('mot manquant');
+    expect(new BlankWordQuestion('enonce','début', 'fin', 'mot manquant').blankWord).toBe('mot manquant');
 })

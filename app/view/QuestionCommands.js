@@ -36,6 +36,7 @@ function addQuestionCommands(program) {
         .command('editquestion')
         .argument('<id>', 'The question ID')
         .argument('<editedText>','Text to edit')
+        .option('--question', 'Option to edit the question of a blank word question')
         .option('--start','Option to edit the start of a blank word question')
         .option('--end','Option to edit the end of a blank word question')
         .description('Edit a question that already exists.')
@@ -49,6 +50,8 @@ function addQuestionCommands(program) {
                         controller.editBlankWord(question, editedText, 1);
                     } else if (options.end){
                         controller.editBlankWord(question, editedText, 2);
+                    } else if (options.question){
+                        controller.editQuestion(question, editedText);
                     }
                     else{
                         console.log("No option has been selected.")
@@ -61,7 +64,7 @@ function addQuestionCommands(program) {
                     console.log("Unrecognized question type.");
                 }
 
-                QuestionCache.instance.saveState();
+                QuestionCache.instance.saveEdition();
             } catch(error){
                 console.error(error.message);
             }
@@ -108,6 +111,8 @@ function addQuestionCommands(program) {
                     }
                 }
 
+                QuestionCache.instance.saveEdition();
+
             } catch(error){
                 console.error(error.message);
             }
@@ -126,11 +131,13 @@ function addQuestionCommands(program) {
 
     program
         .command('rmquestion')
+        .argument('<id>', 'The question ID')
         .description("Delete a question")
         .action(function (id) {
             try{
-                let questionToDelete = QuestionCache.instance.getQuestion(parseInt(id));
-                controller.deleteQuestion(questionToDelete);
+                let question = QuestionCache.instance.getQuestion(parseInt(id));
+                controller.deleteQuestion(question);
+                QuestionCache.instance.saveEdition();
             } catch(error){
                 console.error(error.message);
             }
