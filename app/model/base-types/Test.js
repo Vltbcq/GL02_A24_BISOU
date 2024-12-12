@@ -1,4 +1,7 @@
 const deepCloneArray = require('../utils/ArrayUtils');
+const VCardController = require('../../controller/VCardController')
+
+
 /**
  * Représentation logique d'un examen
  * Définis page 25 du cahier des charges
@@ -11,6 +14,7 @@ class Test {
     constructor() {
         this._questions = [];
         this._id = Date.now();
+        this._vCard = -1;
     }
 
     /**
@@ -43,11 +47,15 @@ class Test {
     }
 
     /**
-     * Un examen n'est valide que si son nombre total de questions est inclus entre 15 et 20
+     * Un examen n'est valide que si son nombre total de questions est inclus entre 15 et 20 & qu'il est associé à une vCard
      * @returns {boolean} - Indique si un examen est valide
      */
-    get isValid() {
-        return 20 >= this.questionNumber && this.questionNumber >= 15
+    isValid() {
+        if (!(this._vCard === (-1))){
+            return 20 >= this.questionNumber && this.questionNumber >= 15    
+        }
+        console.log("There is no vCard linked to the test")
+        return false;
     }
 
     /**
@@ -80,6 +88,16 @@ class Test {
     containsQuestion(question) {
         return this._questions.some(item => item.equal(question));
     }
+
+    addVCardToTest(vcard_id){
+        let controller = new VCardController();
+        if (controller.isCorrectId(vcard_id)){
+            this._vCard = vcard_id;
+        } else{
+            throw new Error("Wrong vCard ID")
+        }
+    }
+
 }
 
 module.exports = Test;
