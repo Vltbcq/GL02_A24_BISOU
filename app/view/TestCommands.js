@@ -17,8 +17,8 @@ function addTestCommands(program) {
     const controller = new TestController();
     program
         .command('mktest')
-        .description("Create a new test")
-        .argument('[questionsIds...]', 'The ids of the initial questions of the test', [])
+        .description("Create a new test with the ids of initial questions")
+        .argument('[questionsIds...]', "The ids of the initial questions of the test, space between ids. ex : '0 1 2 3'  will add question 1 to 4", [])
         .action((questionsIds = []) => {
             const test = controller.createTest();
             questionsIds.forEach(id => {
