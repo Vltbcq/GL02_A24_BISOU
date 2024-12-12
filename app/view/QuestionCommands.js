@@ -11,6 +11,25 @@ const {prettyQuestionList} = require("./pretty-printing-tools/QuestionPrinter");
 const logger = require("../security/Logger");
 const inquirer = require("inquirer").default;
 
+// Chaînes de référence pour les types de questions
+const shortAnswerString = "short answer";
+const trueFalseString = "true/false";
+const multipleChoiceString = "multiple choice";
+const blankWordString = "gapfill";
+const numericString = "numeric";
+
+/*
+ * Dictionnaire associant les types de questions à leur classe respective
+ */
+const questionTypes = {
+    [shortAnswerString]: ShortAnswerQuestion.questionType,
+    [trueFalseString]: TrueFalseQuestion.questionType,
+    [multipleChoiceString]: MultipleChoiceQuestion.questionType,
+    [blankWordString]: BlankWordQuestion.questionType,
+    [numericString]: NumericQuestion.questionType
+}
+
+
 /**
  * Ajoute les commandes liées aux questions à un programme
  * @param program - Programme commander auquel les commandes seront ajoutées
@@ -21,59 +40,67 @@ function addQuestionCommands(program) {
     program
         .command("mkquestion")
         .description("Create a new question")
-        .argument("<type>", "The type of the question")
-        .argument("<question>", "The wording of the question")
-        .argument("<answer>", "The correct answer of the question (yes/y or no/n)") // c'est un mensonge mais c'est pas grave
+        .argument('<type>', `The type of the question, choose among ${shortAnswerString}, ${trueFalseString}, ${multipleChoiceString}, ${blankWordString} and ${numericString}`)
+        .argument('<question>', `The wording of the question, for a ${blankWordString} question insert [gap] at the position of the missing word`)
+        .argument('<answer>', `The correct answer of the question, please notice the following instructions :\nUse yes/y or no/n if it is a ${trueFalseString} question\nFor a ${multipleChoiceString} question separate the answer set and the correct answer set with a colon 'possibleAnswers:correctAnswers', and separate the answers with a comma ','`)
         .action((type, question, answer) => {
-            logger.info(
-                `Execution of mkquestion command with the following parameters : [type : ${type}; question : ${question}, answer : ${answer}`
-            );
-            if (type === NumericQuestion.questionType) {
-                controller.createNumeric(question, parseInt(answer));
-            } else if (type === ShortAnswerQuestion.questionType) {
-                controller.createShortAnswer(question, answer);
-            } else if (type === TrueFalseQuestion.questionType) {
-                controller.createTrueFalse(
-                    question,
-                    answer === "yes" || answer === "y"
-                );
+            logger.info(`Execution of mkquestion command with the following parameters : [type : ${type}; question : ${question}, answer : ${answer}`);
+            if (type === numericString) {
+                controller.createNumeric(question, parseInt(answer))
+            } else if (type === shortAnswerString) {
+                controller.createShortAnswer(question, answer)
+            } else if (type === trueFalseString) {
+                controller.createTrueFalse(question, answer === 'yes' || answer === 'y')
+            } else if (type === multipleChoiceString) {
+                // On sépare les options de réponse et les réponses correctes
+                const answers = answer.split(':').map(item => item.trim());
+                const answerSetString = answers[0];
+                const correctAnswerSetString = answers[1];
+
+                // On découpe les différentes options en tableaux
+                const answerSetList = answerSetString.split(',').map(item => item.trim());
+                const correctAnswerSetList = correctAnswerSetString.split(',').map(item => item.trim());
+
+                controller.createMultipleChoice(question, answerSetList, correctAnswerSetList);
+            } else if (type === blankWordString) {
+                const questionTexts = question.split("[gap]").map(item => item.trim());
+                controller.createBlankWord(questionTexts[0], questionTexts[1], answer);
             }
         });
 
     program
         .command('editquestion')
         .argument('<id>', 'The question ID')
-        .argument('<editedText>','Text to edit')
+        .argument('<editedText>', 'Text to edit')
         .option('--question', 'Option to edit the question of a blank word question')
-        .option('--start','Option to edit the start of a blank word question')
-        .option('--end','Option to edit the end of a blank word question')
+        .option('--start', 'Option to edit the start of a blank word question')
+        .option('--end', 'Option to edit the end of a blank word question')
         .description('Edit a question that already exists.')
         .action(function (id, editedText, options) {
 
-            try{
+            try {
                 let question = QuestionCache.instance.getQuestion(parseInt(id));
 
                 if (question instanceof BlankWordQuestion) {
-                    if (options.start){
+                    if (options.start) {
                         controller.editBlankWord(question, editedText, 1);
-                    } else if (options.end){
+                    } else if (options.end) {
                         controller.editBlankWord(question, editedText, 2);
-                    } else if (options.question){
+                    }else if (options.question){
                         controller.editQuestion(question, editedText);
-                    }
-                    else{
+                    } else {
                         console.log("No option has been selected.")
                     }
 
                 } else if (question instanceof NumericQuestion || question instanceof ShortAnswerQuestion || question instanceof TrueFalseQuestion || question instanceof MultipleChoiceQuestion) {
                     controller.editQuestion(question, editedText);
 
-                } else{
+                } else {
                     console.log("Unrecognized question type.");
                 }
 
                 QuestionCache.instance.saveEdition();
-            } catch(error){
+            } catch (error) {
                 console.error(error.message);
             }
 
@@ -82,13 +109,13 @@ function addQuestionCommands(program) {
     program
         .command('editanswer')
         .argument('<id>', 'The question ID')
-        .argument('<editedText>','Text to edit')
+        .argument('<editedText>', 'Text to edit')
         .option('--answerset', 'Option to edit the answer set for multiple choice questions')
         .option('--correctanswer', 'Option to edit the correct answer among an answer set for multiple choice questions')
         .description('Edit an answer that already exists.')
         .action(function (id, editedText) {
 
-            try{
+            try {
                 let question = QuestionCache.instance.getQuestion(parseInt(id));
 
                 if (question instanceof BlankWordQuestion) {
@@ -102,11 +129,11 @@ function addQuestionCommands(program) {
                     controller.editShortAnswerAnswer(question, editedText);
 
                 } else if (question instanceof TrueFalseQuestion) {
-                    if (editedText === 'true'){
+                    if (editedText === 'true') {
                         controller.editTrueFalseAnswer(question, true);
-                    } else if (answer === 'false'){
+                    } else if (answer === 'false') {
                         controller.editTrueFalseAnswer(question, false);
-                    } else{
+                    } else {
                         console.log("Please choose 'true' or 'false' for true/false question.");
                     }
                 } else if (question instanceof MultipleChoiceQuestion) {
@@ -115,7 +142,7 @@ function addQuestionCommands(program) {
                     } else if (option.correctanswer) {
                         controller.editMultipleChoiceCorrectAnswer(question, editedText);
                     } else {
-                            console.log("No option has been selected. Please select an option (answerset or correctanswer) for multiple choice questions.")
+                        console.log("No option has been selected. Please select an option (answerset or correctanswer) for multiple choice questions.")
                     }
                 }
 
@@ -130,10 +157,10 @@ function addQuestionCommands(program) {
         .command('showquestions')
         .description("Show the questions available")
         .option('-q, --question <question>', 'Defines a substring we are looking for in the wording of the question')
-        .option('-t, --type <type>', 'The type of the question')
+        .option('-t, --type <type>', `The type of the question, choose among ${shortAnswerString}, ${trueFalseString}, ${multipleChoiceString}, ${blankWordString} and ${numericString}`)
         .action((options) => {
             logger.info(`Execution of showquestion command, filtered with question as ${options.question} and type as ${options.type}`);
-            let questions = controller.search(options.question, options.type);
+            let questions = controller.search(options.question, questionTypes[options.type]);
             console.log(prettyQuestionList(questions));
         });
 
