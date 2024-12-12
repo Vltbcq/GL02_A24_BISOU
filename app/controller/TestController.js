@@ -220,6 +220,7 @@ testToCompareStats(testId, tests){
 <<<<<<< HEAD
 <<<<<<< HEAD
    let testToCompare = tests.find(test => test._id === parseInt(testId));
+<<<<<<< HEAD
    if (testToCompare === undefined){
       throw new Error("Can't find the test, please make sure that you entered the good ID")
    }
@@ -234,6 +235,11 @@ testToCompareStats(testId, tests){
    }
    console.log(this.avgStats(testToCompare))
 >>>>>>> tmp
+=======
+   if (testToCompare === undefined){
+      throw new Error("Can't find the test, please make sure that you entered the good ID")
+   }
+>>>>>>> 1224ccb (Je retire les console.log que j'utilisais pour tester le truc)
    return this.avgStats(testToCompare);
 }
 
@@ -247,6 +253,7 @@ testToCompareStats(testId, tests){
 otherTestsStats(testId, tests){
    let otherTests = tests.filter(test => test._id !== testId);
 <<<<<<< HEAD
+<<<<<<< HEAD
    if (otherTests.length === 0){
       throw new Error("There is no tests to compare")
    }
@@ -257,6 +264,11 @@ otherTestsStats(testId, tests){
    }
    console.log(this.globalAvgStats(otherTests));
 >>>>>>> tmp
+=======
+   if (otherTests.length === 0){
+      throw new Error("There is no tests to compare")
+   }
+>>>>>>> 1224ccb (Je retire les console.log que j'utilisais pour tester le truc)
    return this.globalAvgStats(otherTests);
 }
 
