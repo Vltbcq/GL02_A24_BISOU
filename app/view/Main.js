@@ -1,5 +1,6 @@
 const { program } = require('commander');
 const addQuestionCommands = require('./QuestionCommands');
+const addVCardCommands = require('./VCardCommands')
 const addTestCommands = require('./TestCommands');
 const fs = require('fs');
 
@@ -21,6 +22,7 @@ program
     });
 
 addQuestionCommands(program);
+addVCardCommands(program);
 addTestCommands(program);
 
 //command to display readme file
