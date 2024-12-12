@@ -95,7 +95,7 @@ function addTestCommands(program) {
                     controller.testProfile(id, tests);
                     logger.info("Visualization of test profile has been created")
                 } catch(error){
-                    console.error(error);
+                    console.error(error.message);
                 }
                 
             })
@@ -110,7 +110,7 @@ function addTestCommands(program) {
                     controller.compare(id, tests);
                     logger.info("Visualization of test comparisons has been created")
                 } catch(error){
-                    console.error(error);
+                    console.error(error.message);
                 }
             })
 }
