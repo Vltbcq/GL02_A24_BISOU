@@ -1,5 +1,8 @@
 # GL02_A24_BISOU
-Pour lancer l'applicatif, se positionner via le terminal n'importe où dans le dossier du projet et exécuter la commande ``npm run launch`` (on peut ajouter derrière cette commande celle devant être exécutée par l'applicatif) 
+
+Pour installer l'applicatif, se positionner à la racine du répertoire du projet et exécuter la commande `npm install -g`
+Une fois cela fait l'application sera disponible dans le terminal de façon globale sur la machine via la commande ``bisou``
+
 ## Lancement des tests unitaires
 Les tests unitaires sont faits avec la librairie [Jest](https://jestjs.io/fr/).
 Pour lancer les tests, quelques commandes sont disponibles dans la configuration du projet :
