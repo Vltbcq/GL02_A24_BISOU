@@ -50,9 +50,8 @@ function addQuestionCommands(program) {
         .option("--end", "Option to edit the end of a blank word question")
         .description("Edit a question that already exists.")
         .action(function (id, editedText, options) {
-            try {
-                let question = QuestionCache.instance.getQuestion(id);
-
+            try{
+                let question = QuestionCache.instance.getQuestion(parseInt(id));
                 if (question instanceof BlankWordQuestion) {
                     if (options.start) {
                         controller.editBlankWord(question, editedText, 1);
@@ -92,9 +91,8 @@ function addQuestionCommands(program) {
         )
         .description("Edit an answer that already exists.")
         .action(function (id, editedText) {
-            try {
-                let question = QuestionCache.instance.getQuestion(id);
-
+            try{
+                let question = QuestionCache.instance.getQuestion(parseInt(id));
                 if (question instanceof BlankWordQuestion) {
                     controller.editBlankWordAnswer(question, editedText);
                 } else if (question instanceof NumericQuestion) {
@@ -187,8 +185,8 @@ function addQuestionCommands(program) {
         .command("rmquestion")
         .description("Delete a question")
         .action(function (id) {
-            try {
-                let questionToDelete = QuestionCache.instance.getQuestion(id);
+            try{
+                let questionToDelete = QuestionCache.instance.getQuestion(parseInt(id));
                 controller.deleteQuestion(questionToDelete);
             } catch (error) {
                 console.error(error.message);

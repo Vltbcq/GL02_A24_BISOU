@@ -4,14 +4,12 @@
  */
 class Question {
 
-    static _staticId = 0;
-
     /**
      * Instancie une question (à n'utiliser que dans des cas d'héritages)
      * @param question - Enoncé de la question posée
      */
     constructor(question) {
-        this._id = Question._staticId++;
+        this._id = Date.now()
         this._question = question;
     }
 
@@ -43,6 +41,13 @@ class Question {
      */
     set question(editedQuestion){
         this._question = editedQuestion;
+    }
+
+    /**
+     * Modifie l'id de la question
+     */
+    set id(newId){
+        this._id = newId;
     }
 
     /**
