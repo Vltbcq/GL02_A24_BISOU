@@ -241,7 +241,7 @@ function addTestCommands(program) {
             console.log(table.toString());
             figlet(`Score : ${score}/${test.questions.length}`, (err, data) => {
                 if (err) {
-                    console.log('Something went wrong...');
+                    logger.error('Something went wrong...', err);
                     console.dir(err);
                     return;
                 }
