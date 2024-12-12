@@ -3,6 +3,13 @@ const {prettyTestList} = require('./pretty-printing-tools/TestPrinter');
 const QuestionCache = require('../controller/utils/QuestionCache');
 const TestCache = require('../controller/utils/TestCache');
 const inquirer = require('inquirer').default;
+const Table = require('cli-table3');
+const figlet = require('figlet');
+const MultipleChoiceQuestion = require('../model/base-types/implementations/MultipleChoiceQuestion');
+const TrueFalseQuestion = require('../model/base-types/implementations/TrueFalseQuestion');
+const NumericQuestion = require('../model/base-types/implementations/NumericQuestion');
+const ShortAnswerQuestion = require('../model/base-types/implementations/ShortAnswerQuestion');
+const BlankWordQuestion = require('../model/base-types/implementations/BlankWordQuestion');
 const logger = require("../security/Logger");
 
 function addTestCommands(program) {
@@ -45,7 +52,6 @@ function addTestCommands(program) {
                 console.log(`Test with id ${id} not found.`);
             }
         })
-
     program
         .command('editest')
         .description("Edit a test")
@@ -66,7 +72,6 @@ function addTestCommands(program) {
                     choices: ['Add', 'Remove']
                 }
             ]);
-
             const question = QuestionCache.instance.getQuestion(parseInt(questionId));
             if (!question) {
                 console.log(`Question with id ${questionId} not found.`);
@@ -127,5 +132,120 @@ function addTestCommands(program) {
                     logger.error(error.message);
                 }
             })
+        
+    program
+        .command('simultest')
+        .description("Simulate a verified test")
+        .argument('<id>', 'The id of the test to simulate')
+        .action(async (id) => {
+            const test = controller.readAll().find(t => t.id === parseInt(id));
+            if (!test) {
+                console.log(`Test with id ${id} not found.`);
+                return;
+            }
+            if (!test.isValid) {
+                console.log(`Test with id ${id} is not valid.`);
+                return;
+            }
+
+            let score = 0;
+            const results = [];
+
+            for (const question of test.questions) {
+                let answer;
+                if (question instanceof MultipleChoiceQuestion) {
+                    answer = await inquirer.prompt([{
+                        type: 'checkbox',
+                        name: 'userAnswer',
+                        message: question.question,
+                        choices: question.answerSet
+                    }]);
+                } else if (question instanceof TrueFalseQuestion) {
+                    answer = await inquirer.prompt([{
+                        type: 'confirm',
+                        name: 'userAnswer',
+                        message: question.question
+                    }]);
+                } else if (question instanceof NumericQuestion) {
+                    answer = await inquirer.prompt([{
+                        type: 'number',
+                        name: 'userAnswer',
+                        message: question.question
+                    }]);
+                } else if (question instanceof ShortAnswerQuestion) {
+                    answer = await inquirer.prompt([{
+                        type: 'input',
+                        name: 'userAnswer',
+                        message: question.question
+                    }]);
+                } else if (question instanceof BlankWordQuestion) {
+                    answer = await inquirer.prompt([{
+                        type: 'input',
+                        name: 'userAnswer',
+                        message: `${question.question}\n${question.textPart1} .... ${question.textPart2}`
+                    }]);
+                } else {
+                    console.log(`Unknown question type for question: ${question.question}`);
+                    continue;
+                }
+
+                let isCorrect = false;
+                if (question instanceof TrueFalseQuestion) {
+                    isCorrect = answer.userAnswer === question.answer;
+                }
+                if (question instanceof MultipleChoiceQuestion) {
+                    isCorrect = question.correctAnswers.length === answer.userAnswer.length &&
+                        question.correctAnswers.every((val, index) => val === answer.userAnswer[index]);
+                }
+                if (question instanceof NumericQuestion) {
+                    isCorrect = question.answer === answer.userAnswer;
+                }
+                if (question instanceof BlankWordQuestion) {
+                    isCorrect = question.blankWord === answer.userAnswer;
+                }
+                if (question instanceof ShortAnswerQuestion) {
+                    isCorrect = question.answer && answer.userAnswer.toString().toLowerCase() === question.answer.toString().toLowerCase();
+                }
+                results.push({
+                    question: question.question,
+                    userAnswer: question instanceof MultipleChoiceQuestion ? answer.userAnswer.join(', ') : answer.userAnswer,
+                    correctAnswer: question instanceof MultipleChoiceQuestion ? question.correctAnswers.join(', ') :
+                                   question instanceof BlankWordQuestion ? question.blankWord :
+                                   question.answer,
+                    isCorrect: isCorrect
+                });
+
+                if (isCorrect) {
+                    score++;
+                }
+            }
+
+            const terminalWidth = process.stdout.columns;
+            const colWidth = Math.floor(terminalWidth / 4) - 1;
+
+            const table = new Table({
+                head: ['Result', 'Questions', 'User Answers', 'Correct Answers'],
+                colWidths: [colWidth, colWidth, colWidth, colWidth]
+            });
+
+            results.forEach(result => {
+                table.push([
+                    result.isCorrect ? 'Correct' : 'Incorrect',
+                    result.question,
+                    result.userAnswer,
+                    result.correctAnswer
+                ]);
+            });
+
+            console.log(table.toString());
+            figlet(`Score : ${score}/${test.questions.length}`, (err, data) => {
+                if (err) {
+                    logger.error('Something went wrong...', err);
+                    console.dir(err);
+                    return;
+                }
+                console.log(data);
+            });
+        });
 }
 module.exports = addTestCommands;

@@ -3,10 +3,13 @@ const QuestionController = require("../controller/QuestionController");
 const ShortAnswerQuestion = require("../model/base-types/implementations/ShortAnswerQuestion");
 const TrueFalseQuestion = require("../model/base-types/implementations/TrueFalseQuestion");
 const QuestionCache = require("../controller/utils/QuestionCache");
+const TestController = require("../controller/TestController");
+const TestCache = require("../controller/utils/TestCache");
 const BlankWordQuestion = require("../model/base-types/implementations/BlankWordQuestion");
 const MultipleChoiceQuestion = require("../model/base-types/implementations/MultipleChoiceQuestion");
 const {prettyQuestionList} = require("./pretty-printing-tools/QuestionPrinter");
 const logger = require("../security/Logger");
+const inquirer = require("inquirer").default;
 
 // Chaînes de référence pour les types de questions
 const shortAnswerString = "short answer";
@@ -32,10 +35,10 @@ const questionTypes = {
  * @param program - Programme commander auquel les commandes seront ajoutées
  */
 function addQuestionCommands(program) {
-
     const controller = new QuestionController();
+    const testController = new TestController();
     program
-        .command('mkquestion')
+        .command("mkquestion")
         .description("Create a new question")
         .argument('<type>', `The type of the question, choose among ${shortAnswerString}, ${trueFalseString}, ${multipleChoiceString}, ${blankWordString} and ${numericString}`)
         .argument('<question>', `The wording of the question, for a ${blankWordString} question insert [gap] at the position of the missing word`)
@@ -63,12 +66,13 @@ function addQuestionCommands(program) {
                 const questionTexts = question.split("[gap]").map(item => item.trim());
                 controller.createBlankWord(questionTexts[0], questionTexts[1], answer);
             }
-        })
+        });
 
     program
         .command('editquestion')
         .argument('<id>', 'The question ID')
         .argument('<editedText>', 'Text to edit')
+        .option('--question', 'Option to edit the question of a blank word question')
         .option('--start', 'Option to edit the start of a blank word question')
         .option('--end', 'Option to edit the end of a blank word question')
         .description('Edit a question that already exists.')
@@ -82,6 +86,8 @@ function addQuestionCommands(program) {
                         controller.editBlankWord(question, editedText, 1);
                     } else if (options.end) {
                         controller.editBlankWord(question, editedText, 2);
+                    }else if (options.question){
+                        controller.editQuestion(question, editedText);
                     } else {
                         console.log("No option has been selected.")
                     }
@@ -93,7 +99,7 @@ function addQuestionCommands(program) {
                     console.log("Unrecognized question type.");
                 }
 
-                QuestionCache.instance.saveState();
+                QuestionCache.instance.saveEdition();
             } catch (error) {
                 console.error(error.message);
             }
@@ -140,7 +146,9 @@ function addQuestionCommands(program) {
                     }
                 }
 
-            } catch (error) {
+                QuestionCache.instance.saveEdition();
+
+            } catch(error){
                 console.error(error.message);
             }
         })
@@ -154,16 +162,57 @@ function addQuestionCommands(program) {
             logger.info(`Execution of showquestion command, filtered with question as ${options.question} and type as ${options.type}`);
             let questions = controller.search(options.question, questionTypes[options.type]);
             console.log(prettyQuestionList(questions));
-        })
+        });
+
+    program
+        .command("selectquestions")
+        .description("Select multiple questions to add to a test")
+        .option(
+            "-q, --question <question>",
+            "Defines a substring we are looking for in the wording of the question"
+        )
+        .option("-t, --type <type>", "The type of the question")
+        .action(async (options) => {
+            logger.info(
+                `Execution of selectquestion command, filtered with question as ${options.question} and type as ${options.type}`
+            );
+            let questions = controller.search(options.question, options.type);
+            let questionChoices = questions.map((q) => ({
+                name: q.question,
+                value: q.id,
+            }));
+
+            const answers = await inquirer.prompt([
+                {
+                    type: "checkbox",
+                    name: "selectedQuestions",
+                    message: "Select questions to add to the test",
+                    choices: questionChoices,
+                },
+                {
+                    type: "input",
+                    name: "testId",
+                    message: "Enter the ID of the test you want to add the questions to",
+                },
+            ]);
+            for (const questionId of answers.selectedQuestions) {
+                const test = TestCache.instance.getTestById(parseInt(answers.testId));
+                const question = QuestionCache.instance.getQuestion(parseInt(questionId));
+                testController.addQuestionToTest(test, question);
+            }
+            console.log(`Questions added to test ${answers.testId}`);
+        });
 
     program
         .command('rmquestion')
+        .argument('<id>', 'The question ID')
         .description("Delete a question")
         .action(function (id) {
-            try {
-                let questionToDelete = QuestionCache.instance.getQuestion(parseInt(id));
-                controller.deleteQuestion(questionToDelete);
-            } catch (error) {
+            try{
+                let question = QuestionCache.instance.getQuestion(parseInt(id));
+                controller.deleteQuestion(question);
+                QuestionCache.instance.saveEdition();
+            } catch(error){
                 console.error(error.message);
             }
         })

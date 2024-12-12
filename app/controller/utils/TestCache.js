@@ -51,7 +51,12 @@ class TestCache {
    */
   getTestById(id) {
     logger.info(`Accessing test id : ${id}`);
-    return this._tests.find((t) => t.id === id);
+    const test = this._tests.find((t) => t.id === id);
+    if (test) {
+      return test;
+    } else {
+      throw new Error("Test not found");
+    }
   }
 
   /**
