@@ -132,10 +132,21 @@ class TestController {
    * @param {Test[]} tests - Liste contenant le test recherché
    */
   testProfile(testId, tests){
+<<<<<<< HEAD
    let test = tests.find(test => test._id === parseInt(testId));
    if (test === undefined){
       throw new Error("Can't find the test, please make sure that you entered the good ID");
    }
+=======
+   let test = tests.find(test => test._id === testId);
+   if (test === undefined){
+      throw new Error("Can't find the test, please make sure that you entered the good ID");
+   }
+   if (!(test.isValid())){
+      throw new Error("This test isn't valid");
+   }
+   
+>>>>>>> tmp
    let profile = this.countStats(test);
 
    //Visualisation
@@ -202,10 +213,19 @@ class TestController {
  * @returns {number[]} - Statistiques en proportion du test à comparer
  */
 testToCompareStats(testId, tests){
+<<<<<<< HEAD
    let testToCompare = tests.find(test => test._id === parseInt(testId));
    if (testToCompare === undefined){
       throw new Error("Can't find the test, please make sure that you entered the good ID")
    }
+=======
+   let testToCompare = tests.find(test => test._id === testId);
+   console.log(testToCompare)
+   if (testToCompare === undefined){
+      throw new Error("Can't find the test, please make sure that you entered the good ID")
+   }
+   console.log(this.avgStats(testToCompare))
+>>>>>>> tmp
    return this.avgStats(testToCompare);
 }
 
@@ -218,9 +238,17 @@ testToCompareStats(testId, tests){
 
 otherTestsStats(testId, tests){
    let otherTests = tests.filter(test => test._id !== testId);
+<<<<<<< HEAD
    if (otherTests.length === 0){
       throw new Error("There is no tests to compare")
    }
+=======
+   console.log(otherTests);
+   if (otherTests.length === 0){
+      throw new Error("There is no tests to compare")
+   }
+   console.log(this.globalAvgStats(otherTests));
+>>>>>>> tmp
    return this.globalAvgStats(otherTests);
 }
 
