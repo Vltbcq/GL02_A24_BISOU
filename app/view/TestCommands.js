@@ -108,7 +108,7 @@ function addTestCommands(program) {
                     controller.testProfile(parseInt(id), tests);
                     logger.info("Visualization of test profile has been created")
                 } catch(error){
-                    console.error(error.message);
+                    logger.error(error.message);
                 }
                 
             })
@@ -124,7 +124,7 @@ function addTestCommands(program) {
                     controller.compare(parseInt(id), valid_tests);
                     logger.info("Visualization of test comparisons has been created")
                 } catch(error){
-                    console.error(error.message);
+                    logger.error(error.message);
                 }
             })
 }
