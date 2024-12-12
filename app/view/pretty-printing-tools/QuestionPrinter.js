@@ -11,7 +11,7 @@ const MultipleChoiceQuestion = require("../../model/base-types/implementations/M
  * @return {string} - Chaîne de caractères "human readable"
  */
 function prettyQuestion(question) {
-    const questionString = `Question : ${question.question}`;
+    const questionString = `Question id ${question.id} : ${question.question}`;
     let answerString = "Correct answer : ";
     if (question instanceof NumericQuestion || question instanceof ShortAnswerQuestion || question instanceof TrueFalseQuestion) {
         answerString += `\n${question.answer}`;
