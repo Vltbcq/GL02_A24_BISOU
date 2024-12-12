@@ -1,10 +1,10 @@
 const TestController = require('../controller/TestController');
-const Test = require('../model/base-types/Test');
 const {prettyTestList} = require('./pretty-printing-tools/TestPrinter');
 const QuestionCache = require('../controller/utils/QuestionCache');
 const TestCache = require('../controller/utils/TestCache');
 const inquirer = require('inquirer').default;
 const logger = require("../security/Logger");
+
 
 function addTestCommands(program) {
 
@@ -73,7 +73,6 @@ function addTestCommands(program) {
                 console.log(`Question with id ${questionId} not found.`);
                 return;
             }
-
             if (action === 'Add') {
                 controller.addQuestionToTest(test, question);
                 console.log(`Question with id ${questionId} added to test ${id}.`);
@@ -99,5 +98,29 @@ function addTestCommands(program) {
                 console.error(error.message);
             }
         })
+        program
+            .command('profile')
+            .argument('<id>', 'ID of the test you want to get the test profile')
+            .action((id) => {
+                try{
+                    let tests = controller.readAll()
+                    controller.testProfile(parseInt(id), tests);
+                } catch(error){
+                    console.error(error);
+                }
+                
+            })
+
+        program
+            .command('comparison')
+            .argument('<id>','ID of the test you want to compare')
+            .action((id) => {
+                try{
+                    tests = controller.readAll();
+                    controller.compare(parseInt(id), tests);
+                } catch(error){
+                    console.error(error);
+                }
+            })
 }
 module.exports = addTestCommands;

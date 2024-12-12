@@ -2,6 +2,7 @@ const Test = require('../../../app/model/base-types/Test');
 const NumericQuestion = require('../../../app/model/base-types/implementations/NumericQuestion');
 const ShortAnswerQuestion = require('../../../app/model/base-types/implementations/ShortAnswerQuestion');
 const VCardController = require('../../../app/controller/VCardController')
+const TrueFalseQuestion = require('../../../app/model/base-types/implementations/TrueFalseQuestion');
 
 test('Initialisation d\'un examen', () => {
     expect(new Test().questionNumber).toBe(0)
