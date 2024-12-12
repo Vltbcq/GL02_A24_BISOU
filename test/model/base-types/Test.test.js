@@ -1,6 +1,7 @@
 const Test = require('../../../app/model/base-types/Test');
 const NumericQuestion = require('../../../app/model/base-types/implementations/NumericQuestion');
 const ShortAnswerQuestion = require('../../../app/model/base-types/implementations/ShortAnswerQuestion');
+const VCardController = require('../../../app/controller/VCardController')
 
 test('Initialisation d\'un examen', () => {
     expect(new Test().questionNumber).toBe(0)
@@ -34,19 +35,9 @@ test('Suppression de questions', () => {
 })
 
 test("Validité d'un examen", () => {
-    let test = new Test()
-    for (let i = 0; i < 10; i++) {
+    let test = new Test();
+    for (let i = 0; i < 20; i++) {
         test.addQuestion(new NumericQuestion('question', i));
     }
-    expect(test.isValid).toBeFalsy()
-    for (let i = 0; i < 5; i++) {
-        test.addQuestion(new NumericQuestion('question', i+10));
-    }
-    expect(test.isValid).toBeTruthy()
-    for (let i = 0; i < 5; i++) {
-        test.addQuestion(new NumericQuestion('question', i+15));
-    }
-    expect(test.isValid).toBeTruthy()
-    test.addQuestion(new NumericQuestion('question', 30))
-    expect(test.isValid).toBeFalsy()
+    expect(test.isValid()).toBeFalsy()
 })

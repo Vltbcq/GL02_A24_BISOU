@@ -52,6 +52,7 @@ class Test {
         if (!(this._vCard === undefined)){
             return 20 >= this.questionNumber && this.questionNumber >= 15    
         }
+        console.log("There is no vCard linked to the test")
         return false;
     }
 

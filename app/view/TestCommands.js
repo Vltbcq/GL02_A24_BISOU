@@ -78,24 +78,6 @@ function addTestCommands(program) {
                     controller.removeQuestionFromTest(test, question);
                     console.log(`Question with id ${questionId} removed from test ${id}.`);
                 }
-            })
-        program
-        .command('veriftest') // en attente de la creation vCard
-        .description("Verify that a test is valid")
-        .argument('<id>', 'The id of the test to verify')
-        //.argument('<vCardFile>', 'The vCard file needed the verification')
-        .action((id) => {
-            const test = TestCache.instance.getTestById(parseInt(id));
-            if (!test) {
-                console.log(`Test with id ${id} not found.`);
-                return;
-            }
-            if (test.isValid()) {
-                console.log(`Test with id ${id} is valid.`);
-            } else {
-                console.log(`Test with id ${id} is not valid.`);
-            }
-        })
-        
+            })        
 }
 module.exports = addTestCommands;

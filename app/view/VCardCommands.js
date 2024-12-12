@@ -64,7 +64,7 @@ function addVCardCommands(program) {
             }
         })
 
-        program
+    program
         .command('linkvcard')
         .description("Link a vcard to a test")
         .argument('<vcard_id>', 'vCard ID')
