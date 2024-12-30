@@ -14,11 +14,11 @@ const logger = require("../security/Logger");
 const inquirer = require("inquirer").default;
 
 // Chaînes de référence pour les types de questions
-const shortAnswerString = "short answer";
-const trueFalseString = "true/false";
-const multipleChoiceString = "multiple choice";
-const blankWordString = "gapfill";
-const numericString = "numeric";
+const shortAnswerString = "ShortAnswerQuestion";
+const trueFalseString = "TrueFalseQuestion";
+const multipleChoiceString = "MultipleChoiceQuestion";
+const blankWordString = "BlankWordQuestion";
+const numericString = "NumericQuestion";
 
 /*
  * Dictionnaire associant les types de questions à leur classe respective
@@ -57,53 +57,75 @@ function addQuestionCommands(program) {
       logger.info(
         `Execution of mkquestion command with the following parameters : [type : ${type}; question : ${question}, answer : ${answer}`
       );
-      if (type === numericString) {
-        controller.createNumeric(question, parseInt(answer));
-      } else if (type === shortAnswerString) {
-        controller.createShortAnswer(question, answer);
-      } else if (type === trueFalseString) {
-        controller.createTrueFalse(
-          question,
-          answer === "yes" || answer === "y"
-        );
-      } else if (type === multipleChoiceString) {
-        // On sépare les options de réponse et les réponses correctes
-        const answers = answer.split(":").map((item) => item.trim());
-        const answerSetString = answers[0];
-        const correctAnswerSetString = answers[1];
 
-        // On découpe les différentes options en tableaux
-        const answerSetList = answerSetString
-          .split(",")
-          .map((item) => item.trim());
-        const correctAnswerSetList = correctAnswerSetString
-          .split(",")
-          .map((item) => item.trim());
+      const validQuestionTypes = [
+        shortAnswerString,
+        trueFalseString,
+        multipleChoiceString,
+        blankWordString,
+        numericString,
+      ];
 
-        controller.createMultipleChoice(
-          question,
-          answerSetList,
-          correctAnswerSetList
+      if (!validQuestionTypes.includes(type)) {
+        console.warn(
+          `Invalid question type: ${type}. Please choose from ${validQuestionTypes.join(
+            ", "
+          )}`
         );
-      } else if (type === blankWordString) {
-        const { instruction } = await inquirer.prompt([
-          {
-            type: "input",
-            name: "instruction",
-            message: "Please provide instructions for the question:",
-          },
-        ]);
-        const questionTexts = question
-          .split("[gap]")
-          .map((item) => item.trim());
-        controller.createBlankWord(
-          instruction,
-          questionTexts[0],
-          questionTexts[1],
-          answer
-        );
+        return; // Exit the function if type is invalid
       }
-      console.log("A new question has been created");
+
+      try {
+        if (type === numericString) {
+          controller.createNumeric(question, parseInt(answer));
+        } else if (type === shortAnswerString) {
+          controller.createShortAnswer(question, answer);
+        } else if (type === trueFalseString) {
+          controller.createTrueFalse(
+            question,
+            answer === "yes" || answer === "y"
+          );
+        } else if (type === multipleChoiceString) {
+          // On sépare les options de réponse et les réponses correctes
+          const answers = answer.split(":").map((item) => item.trim());
+          const answerSetString = answers[0];
+          const correctAnswerSetString = answers[1];
+
+          // On découpe les différentes options en tableaux
+          const answerSetList = answerSetString
+            .split(",")
+            .map((item) => item.trim());
+          const correctAnswerSetList = correctAnswerSetString
+            .split(",")
+            .map((item) => item.trim());
+
+          controller.createMultipleChoice(
+            question,
+            answerSetList,
+            correctAnswerSetList
+          );
+        } else if (type === blankWordString) {
+          const { instruction } = await inquirer.prompt([
+            {
+              type: "input",
+              name: "instruction",
+              message: "Please provide instructions for the question:",
+            },
+          ]);
+          const questionTexts = question
+            .split("[gap]")
+            .map((item) => item.trim());
+          controller.createBlankWord(
+            instruction,
+            questionTexts[0],
+            questionTexts[1],
+            answer
+          );
+        }
+        console.log("A new question has been created");
+      } catch (error) {
+        console.error(`Error creating question: ${error.message}`);
+      }
     });
 
   program
