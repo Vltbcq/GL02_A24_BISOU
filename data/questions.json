@@ -1,0 +1,20 @@
+[
+  {
+    "id": 3,
+    "ess_cn": "NumericQuestion",
+    "_question": "Combien y a-t-il de jours dans une année ?",
+    "_answer": 365
+  },
+  {
+    "id": 4,
+    "ess_cn": "ShortAnswerQuestion",
+    "_question": "Qui a peint la Joconde ?",
+    "_answer": "Léonard de Vinci"
+  },
+  {
+    "id": 5,
+    "ess_cn": "TrueFalseQuestion",
+    "_question": "Paris est la capitale de l'Espagne.",
+    "_answer": false
+  }
+]
