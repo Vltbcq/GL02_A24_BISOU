@@ -11,17 +11,42 @@ class VCardController{
      * @param {string} phone - Numéro de téléphone
      * @param {string} mail - Adresse mail
      */
-    createVCard(firstname, lastname, phone, mail){
-        let id = this.readLastID() + 1;
-        let vCard = vCardsJS();
+    createVCard(firstname, lastname, phone, mail) {
+        try {
+            const id = `${firstname.toLowerCase().trim()}${lastname.toLowerCase().trim()}`;
+            
+            if (this.vCardExists(id)) {
+                console.log(`A vCard with the id "${id}" already exists`);
+                return;
+            }
+    
+            const vCard = vCardsJS();
+            vCard.firstName = firstname;
+            vCard.lastName = lastname;
+            vCard.workPhone = phone;
+            vCard.email = mail;
+    
+            vCard.saveToFile(`${vcard_path}/${id}.vcf`);
+            console.log(`${id}.vcf has been created with the id "${id}"`);
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
 
-        vCard.firstName = firstname;
-        vCard.lastName = lastname;
-        vCard.workPhone = phone;
-        vCard.email = mail;
-
-        vCard.saveToFile(`${vcard_path}/${id}.vcf`);
-        console.log(`${id}.vcf has been created`);
+    /**
+     * Vérifie si une vCard existe déjà dans le dossier vcard
+     * @param {number} id - ID de la vCard
+     * @returns {boolean} - Vrai ou faux selon si la vCard existe ou non
+     */
+    vCardExists(id) {
+        try {
+            const files = fs.readdirSync(vcard_path);
+    
+            return files.some((file) => file.includes(id));
+        } catch (error) {
+            console.error(error.message);
+            return false;
+        }
     }
 
     /**
@@ -95,7 +120,6 @@ class VCardController{
     editMail(tab, newMail){
         tab[3] = newMail;
     }
-
 
     /**
      * Supprime une vCard à partir de son ID
