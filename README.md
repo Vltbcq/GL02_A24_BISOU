@@ -1,5 +1,5 @@
 # GL02_A24_BISOU
-## Auteur
+## Auteurs
 Valentin BOCQUIER, Paul LASSASSEIGNE, Thomas MATAMBA, Nathan HONORE, Adeline VERCOUTRE et Elia GAUTIER
 
 ## Installation & lancement
