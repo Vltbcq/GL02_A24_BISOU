@@ -225,6 +225,28 @@ function addQuestionCommands(program) {
     });
 
   program
+    .command("showquestions")
+    .description("Show the questions available")
+    .option(
+      "-q, --question <question>",
+      "Defines a substring we are looking for in the wording of the question"
+    )
+    .option(
+      "-t, --type <type>",
+      `The type of the question, choose among ${shortAnswerString}, ${trueFalseString}, ${multipleChoiceString}, ${blankWordString} and ${numericString}`
+    )
+    .action((options) => {
+      logger.info(
+        `Execution of showquestion command, filtered with question as ${options.question} and type as ${options.type}`
+      );
+      let questions = controller.search(
+        options.question,
+        questionTypes[options.type]
+      );
+      console.log(prettyQuestionList(questions));
+    });
+
+  program
     .command("selectquestions")
     .description("Select multiple questions to add to a test")
     .option(
