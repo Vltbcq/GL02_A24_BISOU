@@ -184,7 +184,7 @@ function addQuestionCommands(program) {
       "Option to edit the correct answer among an answer set for multiple choice questions"
     )
     .description("Edit an answer that already exists.")
-    .action(function (id, editedText) {
+    .action(function (id, editedText, options) {
       try {
         let question = QuestionCache.instance.getQuestion(parseInt(id));
 
@@ -206,9 +206,9 @@ function addQuestionCommands(program) {
             );
           }
         } else if (question instanceof MultipleChoiceQuestion) {
-          if (option.answerset) {
+          if (options.answerset) {
             controller.editMultipleChoiceAnswerSet(question, editedText);
-          } else if (option.correctanswer) {
+          } else if (options.correctanswer) {
             controller.editMultipleChoiceCorrectAnswer(question, editedText);
           } else {
             console.log(
@@ -222,6 +222,28 @@ function addQuestionCommands(program) {
       } catch (error) {
         console.error(error.message);
       }
+    });
+
+  program
+    .command("showquestions")
+    .description("Show the questions available")
+    .option(
+      "-q, --question <question>",
+      "Defines a substring we are looking for in the wording of the question"
+    )
+    .option(
+      "-t, --type <type>",
+      `The type of the question, choose among ${shortAnswerString}, ${trueFalseString}, ${multipleChoiceString}, ${blankWordString} and ${numericString}`
+    )
+    .action((options) => {
+      logger.info(
+        `Execution of showquestion command, filtered with question as ${options.question} and type as ${options.type}`
+      );
+      let questions = controller.search(
+        options.question,
+        questionTypes[options.type]
+      );
+      console.log(prettyQuestionList(questions));
     });
 
   program
