@@ -184,7 +184,7 @@ function addQuestionCommands(program) {
       "Option to edit the correct answer among an answer set for multiple choice questions"
     )
     .description("Edit an answer that already exists.")
-    .action(function (id, editedText) {
+    .action(function (id, editedText, options) {
       try {
         let question = QuestionCache.instance.getQuestion(parseInt(id));
 
@@ -206,9 +206,9 @@ function addQuestionCommands(program) {
             );
           }
         } else if (question instanceof MultipleChoiceQuestion) {
-          if (option.answerset) {
+          if (options.answerset) {
             controller.editMultipleChoiceAnswerSet(question, editedText);
-          } else if (option.correctanswer) {
+          } else if (options.correctanswer) {
             controller.editMultipleChoiceCorrectAnswer(question, editedText);
           } else {
             console.log(
