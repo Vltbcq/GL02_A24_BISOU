@@ -1,4 +1,6 @@
 # GL02_A24_BISOU
+## Auteur
+Valentin BOCQUIER, Paul LASSASSEIGNE, Thomas MATAMBA, Nathan HONORE, Adeline VERCOUTRE et Elia GAUTIER
 
 ## Installation & lancement
 
@@ -33,7 +35,6 @@ Pour lancer les tests, quelques commandes sont disponibles dans la configuration
 ## Données de test
 
 Vous avez à votre disposition des questions et des tests prédéfinis pour vous aidez à réaliser des tests dans les fichiers testing_questions.json et testing_tests.json
---> copier le contenu dans les fichiers questions.json et tests.json du dossier data
 
 ## Écarts au cahier des charges
 
